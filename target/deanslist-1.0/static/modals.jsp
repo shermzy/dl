@@ -1,0 +1,76 @@
+<!--login/signup modals-->
+<link rel="stylesheet" type="text/css" href="lib/plugins/bootstrap-datepicker/css/datepicker3.css"/>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog login_dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="center" id="user_authentication_title">Login</h2>
+            </div>
+
+            <!-- LOGIN-->
+            <div class="modal-body login_body" id="login_body">
+                <!--LOGIN DETAILS-->
+
+                <!--FACEBOOK LOGIN -->
+                <div class="span100"><button id="fb_login" class="button fbLogin"><i class="fa fa-facebook-square"></i><span class="margin10">Log in with Facebook</span></button> </div>
+                <!--FACEBOOK LOGIN -->
+
+                <div class="center"> <span class="margin15">- or -</span></div>
+                <div class="input-group-dl center">
+
+                    <input type="text" class="input_text" placeholder=" Email" id="email_login">
+                </div>
+                <div class="input-group-dl center">
+
+                    <input type="password" class="input_text" placeholder=" Password" id="password_login">
+                </div>
+
+                <div class="center"><button id="login_btn" class="button login_btn">Log in</button></div>
+                <!--END LOGIN DETAILS-->
+            </div>
+            <!-- END LOGIN-->
+
+            <!--SIGNUP -->
+            <div class="modal-body signup_body invis" id="signup_body">
+                <!--SIGNUP DETAILS-->
+
+                <div class='span100'>
+                    <div class="input-group-dl ">
+
+                        <input type="text" class="input_text" placeholder=" Email" id="email_signup">
+                        <span id="email-help" class="block"></span>
+                    </div>
+
+                    <div class="input-group-dl">
+
+                        <input type="password" class="input_text" placeholder=" Password" id="password_signup">
+
+                        <i class="fa fa-eye show_pw"></i>
+
+                    </div>
+                    <div class="input-group-dl ">
+
+                        <input type="password" class="input_text" placeholder=" Confirm Password" id="confirm_password">
+                        <span id="confirmPassword-help" class="block"></span>
+                    </div>
+                    <div class="input-group-dl" data-date-viewmode="years">
+                        <input class="input_text datepicker" data-date-format= "dd/mm/yyyy" size="16" type="text" id="birthdate" placeholder="Date Of Birth" readonly>
+                    </div>
+
+                    <div class="center"><button id="login_btn" class="button login_btn">Sign up</button></div>
+                    <!--END SIGNUP DETAILS-->
+                </div>
+            </div>
+            <!--END SIGNUP-->
+
+
+
+            <div class="modal-footer login_footer">
+                <div class="center" id="login_footer">Don't have an account yet? <span class='clickable' id='signup_link'><a>Sign up now!</a></span></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end login/signup modals-->
+
