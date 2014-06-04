@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package process;
 
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,8 +37,14 @@ public class processAuthenticate extends HttpServlet {
         try {
 //check for whether email exists
             
-            if(request.getParameter("checkEmail") != null){
-                
+            if (request.getParameter("type").equalsIgnoreCase("checkEmail")) {
+                if (!UserDAO.checkUserExist((String) request.getParameter("email"))) {
+                    out.println("available");
+                    
+                } else {
+                    out.print("unavailable");
+                    
+                }
             }
         } finally {
             out.close();

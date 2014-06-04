@@ -3,6 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var email = false,
+        password = false,
+        confirmPassword = false,
+        dob = false;
+var date_count = 0;
 //fb signup
 $('#fb_login').click(function() {
     fb_login();
@@ -16,6 +21,8 @@ function enableSignup() {
             $('#login_footer').html("Already have an account? <span class='clickable' id='login_link'><a>Log in</a></span>");
             enableLogin();
         });
+
+
     });
 }
 
@@ -34,9 +41,31 @@ function enableLogin() {
     initSignupValidation();
 
 }
+
+function signupInit() {
+    $('button#login_btn').click(function() {
+        console.log("processSignup")
+        $.post('processRegister',
+                {type: 'signup',
+                    email: $('#email_signup').val(),
+                    password: $('#password_signup').val(),
+                    dob: $('#birthdate').val()}
+        , function(success) {
+
+        })
+    })
+}
+function update() {
+
+    if ((email + password + confirmPassword + dob) == 4) {
+
+        $('button#login_btn').removeClass('blockedOff');
+        signupInit();
+    }
+}
 function initSignupValidation() {
     //check for email
-    console.log("Init email change validation");
+
     $("#email_signup").change(function() {
         $('#email-help').html('');
         var $this = $('#email_signup').val().trim();
@@ -46,26 +75,28 @@ function initSignupValidation() {
             validEmail = true;
 
         }
-        console.log(validEmail);
+
         $.ajax({url: "processAuthenticate", type: 'GET',
             data: {type: 'checkEmail', email: $this},
             success: function(response) {
-                console.log(response + "response")
+
                 if ($.trim(response) === "available" && validEmail) {
 
                     //no existing email in database and it is a valid email
                     $('#email_signup').removeClass('error');
-                    $('#email-help').html('Email is available <i class="fa fa-check"></i>').addClass('success');
+                    $('#email-help').html('Email is available <i class="fa fa-check"></i>').addClass('success green');
                     email = true;
                     update();
                 } else if ($.trim(response) === "unavailable" && validEmail) {
                     //email has been used to registered before but it is a valid email
                     email = false;
+                    update()
                     $("#email_signup").addClass('border-red');
                     $('#email-help').html("Sorry, it looks like " + $('#email_signup').val() + " belongs to an existing account.<i class='fa fa-warning'></i> ").addClass('error').removeClass('success');
                 } else {
                     //email entered is not valid
                     email = false;
+                    update()
                     $("#email_signup").addClass('border-red');
                     $('#email-help').html("Please enter a valid email address. <i class='fa fa-warning'></i>").addClass('error').removeClass('success');
                 }
@@ -76,6 +107,18 @@ function initSignupValidation() {
         });
     });
 
+//check if password is weak or very weak
+    $('#password_signup').change(function() {
+        $('#password-help').html('');
+        if ($('#pw_strength').hasClass('weak') || $('#pw_strength').hasClass('veryweak')) {
+            $('#password-help').html("Password should contain at least an Uppercase letter, a lowercase letter, numbers and at least 6 chracters long.").addClass('error');
+            password = false;
+            update();
+        } else {
+            password = true;
+            update();
+        }
+    })
     //validate password confirmation
     $("#confirm_password").change(function() {
         $('#confirmPassword-help').removeClass('error red green');
@@ -90,9 +133,18 @@ function initSignupValidation() {
             update();
         }
     });
-
+    $("#birthdate").change(function() {
+        if (date_count == 2) {
+            dob = true;
+            update();
+            date_count = 0;
+        } else {
+            date_count++
+        }
+    })
 
 }
+
 /*!
  * strength.js
  * Original author: @aaronlumsden
@@ -211,7 +263,7 @@ function initSignupValidation() {
 
             thisid = this.$elem.attr('id');
 
-            this.$elem.addClass(this.options.strengthClass).attr('data-password', thisid).after('<input style="display:none" class="input_text ' + this.options.strengthClass + '" placeholder=" Password" data-password="' + thisid + '" type="text" name="" value=""><div class="' + this.options.strengthMeterClass + '"><div data-meter="' + thisid + '"><p></p></div></div>');
+            this.$elem.addClass(this.options.strengthClass).attr('data-password', thisid).after('<input style="display:none" class="input_text ' + this.options.strengthClass + '" placeholder=" Password" data-password="' + thisid + '" type="text" name="" value=""><div class="' + this.options.strengthMeterClass + '"><div id="pw_strength" data-meter="' + thisid + '"><p></p></div></div>');
 
             this.$elem.bind('keyup keydown', function(event) {
                 thisval = $('#' + thisid).val();

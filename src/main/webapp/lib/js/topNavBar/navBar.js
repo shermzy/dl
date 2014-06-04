@@ -21,21 +21,15 @@ function initSignup() {
 }
 
 function initUserNav() {
-    $('#logout').click(function() {
-        fb_logout();
-        //handle non-fb logouts too!!
-
-        $('#nav-btns').html('<div class="top_nav_btn" id="sign_in_btn">Sign in</div>');
-        initSignup();
-    })
+    logout();
     initSignup();
     SidebarMenuEffects();
-    
+
 }
 
-function logout(){
-    $('#logout').click(function(){
+function logout() {
+    $('#logout').click(function() {
         fb_logout();
-        window.location.href="/index";
+        
     })
 }

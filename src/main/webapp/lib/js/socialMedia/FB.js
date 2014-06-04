@@ -36,13 +36,38 @@ window.fbAsyncInit = function() {
 
             FB.api('/me', function(response) {
                 var picSrc = ("https://graph.facebook.com/" + response.id + "/picture?width=120");
-
+                $.cookie('dl_user2',response.email)
+                $.cookie('dl_user', {id: response.email, last_login: new Date().getTime()}, { path: '/' })
+                console.log("cookie monster : " + $.cookie('dl_user'));
+                var user = $.cookie('dl_user');
+                console.log("user: " + user.id)
+                console.log("cookie monster2 : " + $.cookie('dl_user2'));
                 $('.username').text(response.name);
+
                 // document.getElementById("profilePic").src = picSrc;                            
                 $(".profilePic").attr('src', picSrc);
+                $.ajax({url: "processAuthenticate", type: 'GET',
+                    data: {type: 'checkEmail', email: response.email},
+                    success: function(validateEmail) {
+                        console.log(validateEmail + "out");
+                        if ($.trim(validateEmail) === 'available') {
+                            console.log($.trim(validateEmail) + "in");
+                            $.post('processRegister',
+                                    {type: 'facebook_login',
+                                        email: response.email,
+                                        password: $('#password_signup').val(),
+                                        dob: response.birthday}
+                            , function(success) {
+
+                            })
+                        }
+                    }
+
+                })
+
             });
             //enable all js buttons for logged in user
-            
+
             initUserNav();
 
         } else {
@@ -65,7 +90,7 @@ window.fbAsyncInit = function() {
 
 function fb_logout() {
     FB.api('/me/permissions', 'delete', function(response) {
-        console.log(response); // true
+        window.location.href = "home";
     });
 }
 function fb_login() {
@@ -73,34 +98,7 @@ function fb_login() {
         if (response.authResponse) {
             //access_token = response.authResponse.accessToken;
             window.location.href = "index.jsp";
-            //  check if user has an account in it. If email is available (have not signed up),create a new user
-            /*    FB.api("/me", function(rsp) {
-             if (rsp && !rsp.error) {
-             
-             $.ajax({url: "/sports/processSignUp", type: 'POST',
-             data: {email: rsp.email},
-             success: function(suc) {
-             
-             if ($.trim(suc) === "available") {
-             $.ajax({url: "/sports/fbSignUp", type: 'POST',
-             data: {type: "fb", mSignup: "fb", email: rsp.email, name: rsp.first_name, gender: rsp.gender, dob: rsp.birthday}
-             });
-             $.cookie("user",rsp.email, { path: '/' });  
-             window.location.href = "../Admin/main.jsp";
-             } else {
-             $.cookie("user",rsp.email, { path: '/' }); 
-             
-             window.location.href = "../Admin/main.jsp";
-             }
-             ;
-             },
-             error: function(err){
-             
-             }
-             });
-             }
-             ;
-             });*/
+
         } else {
             //user hit cancel button
             console.log('User cancelled login or did not fully authorize.');
@@ -111,3 +109,4 @@ function fb_login() {
 
 }
 ;
+

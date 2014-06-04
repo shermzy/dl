@@ -8,7 +8,7 @@
         <meta name="MobileOptimized" content="320">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link href="lib/css/bootstrap.css" rel="stylesheet" type="text/css" />
-       
+
         <link href="lib/css/deanslist.css" rel="stylesheet" type="text/css" />
     </head><!-- END HEAD -->
 
@@ -20,26 +20,26 @@
     <div id="st-container" class="st-container">
 
         <nav class="st-menu st-effect-1" id="menu-1">
-            <h2 class="icon icon-lab">Sidebar</h2>
+            <h2 class="white">Menu</h2>
             <ul>
                 <a href="home"><li class="sidemenu-list"><i class="fa fa-search"></i><span class="sidenav_title">Browse</span></li></a>
                 <a href="post"><li class="sidemenu-list"><i class="fa fa-plus"></i><span class="sidenav_title">Post</span></li></a>
-               <a href="profile"><li class="sidemenu-list"><i class="fa fa-user"></i><span class="sidenav_title">Profile</span></li>
-                
+                <a href="profile"><li class="sidemenu-list"><i class="fa fa-user"></i><span class="sidenav_title">Profile</span></li>
+
             </ul>
         </nav>
         <div class="st-content"><!-- this is the wrapper for the content --> 
             <div class="st-content-inner">  
                 <div class="topbar">
-                    <div class="container">
+                    <div class="container"> 
                         <!--Start logo placement-->
                         <a href="./index.jsp">
-                            <div class="company_logo">
+                            <div class="company_logo pull-left">
                                 <span class="lato_font font20">  DeansList</span>
                             </div>
                         </a>
                         <!--End logo placement-->
-
+                   
                         <!--start right nav bar-->
                         <nav class="pull-right nav" id="nav-btns">
                         </nav>
@@ -47,7 +47,7 @@
                         <!--End Right nav bar-->
 
                     </div>
-                      <div class="clearfix"></div>
+
                 </div>
-              
+
                 <!-- End TOP NAVIGATION BAR -->

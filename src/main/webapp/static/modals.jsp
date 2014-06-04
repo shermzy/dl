@@ -39,7 +39,7 @@
                     <div class="input-group-dl ">
 
                         <input type="text" class="input_text" placeholder=" Email" id="email_signup">
-                        <span id="email-help" class="block"></span>
+                        <span id="email-help" class="font10 block"></span>
                     </div>
 
                     <div class="input-group-dl">
@@ -47,18 +47,18 @@
                         <input type="password" class="input_text" placeholder=" Password" id="password_signup">
 
                         <i class="fa fa-eye show_pw"></i>
-
+                        <span id="password-help" class="font10 block"></span>
                     </div>
                     <div class="input-group-dl ">
 
                         <input type="password" class="input_text" placeholder=" Confirm Password" id="confirm_password">
-                        <span id="confirmPassword-help" class="block"></span>
+                        <span id="confirmPassword-help" class="font10 block"></span>
                     </div>
                     <div class="input-group-dl" data-date-viewmode="years">
                         <input class="input_text datepicker" data-date-format= "dd/mm/yyyy" size="16" type="text" id="birthdate" placeholder="Date Of Birth" readonly>
                     </div>
 
-                    <div class="center"><button id="login_btn" class="button login_btn">Sign up</button></div>
+                    <div class="center"><button id="login_btn" class="button login_btn blockedOff">Sign up</button></div>
                     <!--END SIGNUP DETAILS-->
                 </div>
             </div>

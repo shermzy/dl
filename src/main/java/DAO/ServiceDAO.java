@@ -33,7 +33,7 @@ public class ServiceDAO {
             query += "insert into `service` (`user_id`, `title`, `category`, `subcategory`,`piclink`,";
             query += "`description`,`maxtime`,`itemreq`,`tags`,`timeCreated`) ";
             query += "values ('" + service.getString("user_id") + "','" + service.getString("title") + "','" + service.getString("category") + "',";
-            query += "'" + service.getString("subcategory") + "','" + service.getString("piclink") + "','" + service.getString("description") + "',";
+            query += "'" + service.getString("subcategory") + "','" + service.getString("image") + "','" + service.getString("description") + "',";
             query += "'" + service.getString("maxtime") + "','" + service.getString("itemreq") + "','" + service.getString("tags") + "','" + service.getString("timeCreated") + "')";
             System.out.println(query);
             st = conn.createStatement();
