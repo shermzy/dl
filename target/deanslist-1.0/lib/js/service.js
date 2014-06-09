@@ -3,11 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var BUSINESSSUB = ["Branding Services", "Market Research", "IT Consulting", "Business Consulting", "Financial Consulting", "Legal Consulting", "Others"]
-var ITSUB = ["Mobile Application", "Debugging", "Web Design", "System Architecture", "Databases", "Others"];
-var WRITINGSUB = ["Speech Writing", "Proof Reading & Editing", "Resumes & Cover Letter", "Reviews", "Website Content", "Translation", "Creative Writing", "Voice overs", "Others"]
 var errors = [];
-console.log($.cookie('dl_user'))
+$(document).ready(function() {
+    $.smoothScroll({
+        scrollElement: $('html,body'),
+        scrollTarget: '#assignment',
+        speed: 800
+    });
+
+    window.onbeforeunload = function(e) {
+        var e = e || window.event,
+                message = 'If you leave before submitting, your changes will be lost.';
+
+        // For IE and Firefox prior to version 4
+        if (e)
+        {
+            e.returnValue = message;
+        }
+        return message;
+    }
+
+    populateDropdown();
+
+});
+
+
+
 //start image input
 +function($) {
     "use strict";
@@ -75,7 +96,7 @@ console.log($.cookie('dl_user'))
                     var element = this.$element
 
                     reader.onload = function(re) {
-                        var $img = $('<img>') // .attr('src', re.target.result)
+                        var $img = $('<img id="img_prev">') // .attr('src', re.target.result)
                         $img[0].src = re.target.result
                         e.target.files[0].result = re.target.result
                         $('#cover-x').show();
@@ -189,35 +210,14 @@ console.log($.cookie('dl_user'))
 //start html5 editor
 $('#description').summernote({height: 300,
     onkeyup: function(e) {
-        /*   var temp = $('#description').code().replace(/(<([^>]+)>)/ig, "");
-         var num = temp.length;
-         console.log("last test: " + temp.substring(num - 5, num));
-         console.log(num);
-         while (temp.substring(num - 5, num) === 'nbsp;') {
-         
-         temp = temp.substring(0,temp.length-6)
-         console.log(temp);
-         }
-         
-         $('#desc_wordcount').html(num + '/1000 chars');*/
     }
 });
 //end html5 editor
 
 $('#itemsreq').summernote({height: 300});
-//slider for amount
-/*$("#time_range").ionRangeSlider({
- min: 0,
- max: 30,
- type: 'single',
- step: 1,
- maxPostFix: "+",
- postfix: " days",
- prettify: true
- //hasGrid: true
- });*/
 
-preventCharsInput($('#time'));
+
+preventCharsInput($('#maxtime'));
 function preventCharsInput(ele) {
     ele.keypress(function(e) {
         var a = [];
@@ -228,6 +228,9 @@ function preventCharsInput(ele) {
 
         if (!($.inArray(k, a) >= 0))
             e.preventDefault();
+    });
+    $(ele).bind("paste", function(e) {
+        e.preventDefault();
     });
 }
 //tags input
@@ -255,42 +258,54 @@ $('#title').maxlength({
 
 //handles the change in category
 
+var populateDropdown = function() {
+    $.get("getCategories", {type: 'category'}, function(data) {
+        var content = "";
+        $.each(data, function(key, value) {
+            content += "<li data-category='" + key + "'>" + value + "</li>";
+            content += "<span class='menu-divider'></span>";
+        })
+        $('#category-list').html(content);
+        $('#category-list li').click(function() {
+            $('#selected_cat').html($(this).text() + " <b class='caret'></b>");
+            $('#selected_cat').data("category", $(this).data("category"))
+            console.log("cat: " + $('#selected_cat').data("category"))
+            subcategoryInit();
+        })
+    }, "json")
 
-$('#category-options').change(function() {
-    $('#subcategory-options').html("");
-    if ($('#category-options').val() == "Business") {
-        BUSINESSSUB.forEach(function(data) {
-            $('#subcategory-options').append('<option>' + data + '</option');
+}
+
+function subcategoryInit() {
+
+    $.get("getCategories", {type: 'subcategory', subcategory: $('#selected_cat').data("category")}, function(data) {
+        var content = "";
+        $.each(data, function(key, value) {
+            content += "<li data-category='" + key + "'>" + value + "</li>";
+            content += "<span class='menu-divider'></span>";
+        })
+        $('#subcategory-list').html(content);
+        $('#subcategory-list li').click(function() {
+            $('#selected_subcat').html($(this).text() + " <b class='caret'></b>");
+            $('#selected_subcat').data("category", $(this).data("category"))
+            subcategoryInit();
         })
         $('#subcategory').show();
-    } else if ($('#category-options').val() == "IT") {
-        ITSUB.forEach(function(data) {
-            $('#subcategory-options').append('<option>' + data + '</option');
-        })
-        $('#subcategory').show();
-    } else if ($('#category-options').val() == "Writing") {
-        WRITINGSUB.forEach(function(data) {
-            $('#subcategory-options').append('<option>' + data + '</option');
-        });
-        $('#subcategory').show();
-    } else {
-        $('#subcategory').hide();
-    }
+    }, "json")
 
-
-})
+}
 
 //tooltips
 
 
 var assignment = {title: "<h5><b>Introduce your service</b></h5>", content: "This is the title of your service. It is also the first impression. Make it good."};
-var category = {title: "<h5><b>Categorise your Assignment</b></h5>", content: "Choose the most suitable category for your service. This allows people to find it more easily."};
-var gallery = {title: "<h5><b>Strut your stuff</b></h5>", content: "A picture speaks a thousand words. Show an image of you or what you can do!"};
+var category = {title: "<h5><b>Categorise your Service</b></h5>", content: "Choose the most suitable category for your service. This allows people to find it more easily."};
+var coverPic = {title: "<h5><b>Strut your stuff</b></h5>", content: "A picture speaks a thousand words. Show an image of you or what you can do!"};
 var desc = {title: "<h5><b>Decribe your service</b></h5>", content: "Giving a description of what you can do can allow buyers to know your skills and abilities better. <b>Be true</b> and <b>be detailed</b>!"};
-var timereq = {title: "<h5><b>Time and costs for your service</b></h5>", content: "How long will take to complete the above service? Make an accurate estimation of the <b>maximum</b> time you need to complete it. Failing to deliver it on time will result in forfeiting of payment and downgrading of your ratings."};
+var timereq = {title: "<h5><b>Time required for your service</b></h5>", content: "How long will take to complete the above service? Make an accurate estimation of the <b>maximum</b> time you need to complete it. Failing to deliver it on time will result in forfeiting of payment and downgrading of your ratings."};
 var itemreq = {title: "<h5><b>What do you need</b></h5>", content: "Specify the things you need the client to present to you that is critical for the completion of the assignment. <b>Do not</b> request for more than the things you need."};
 var tag = {title: "<h5><b>Keywords. Makes searching easier</b></h5>", content: "Specify keywords to identify your service. This helps buyers to find relevant results based on how you classify your service!"};
-var tips = {assignment: assignment, category: category, gallery: gallery, desc: desc, timereq: timereq, itemreq: itemreq, tag: tag};
+var tips = {assignment: assignment, category: category, coverPic: coverPic, desc: desc, timereq: timereq, itemreq: itemreq, tag: tag};
 $('.form-group').on({
     mouseover: function() {
         var e = this.id;
@@ -311,30 +326,38 @@ $('.form-group').on({
     }
 })
 save();
+
 function save() {
     $('#save_btn').click(function() {
+
 //execute validate here
         var proceed = false;
         proceed = validateService();
-        
-        if (proceed) {
 
+        if (proceed) {
+            console.log("cat in L: " + $('#selected_cat').data("category"));
             var user_service = {};
-            user_service.user_id = "1234"
+            user_service.user_id = user.id;
             user_service.title = "I can " + $('#title').val();
-            user_service.category = $('#category-options').val();
-            user_service.subcategory = $('#subcategory-options').val();
-            user_service.image = "1234_" + new Date().getTime() ;
+            user_service.category = $('#selected_cat').data("category");
+            user_service.subcategory = $('#selected_subcat').data("category");
+            user_service.image = "uploads/images/" + user.id + "/services/" + user.id + "_" + new Date().getTime() + ".png";
+            user_service.path = "uploads/images/" + user.id + "/services/";
+            user_service.imgLink = user.id + "_" + new Date().getTime();
             user_service.description = $('#description').code();
             user_service.maxtime = $('#maxtime').val();
             user_service.itemreq = $('#itemsreq').code();
             user_service.tags = $('#tags').val();
             user_service.timeCreated = new Date().getTime();
             console.log(user_service);
+            //user_service = cleanObject(user_service);
+            console.log(user_service);
             $.post("postService",
                     {service: JSON.stringify(user_service)}, function(data) {
-                data.response;
-            }, "json")
+                var compressImg = imageCompressor.compress($('#img_prev').attr('src'), $('#img_prev'), 70, "jpg");
+                imageCompressor.upload(compressImg, "postService", user_service.path, user_service.imgLink, "post")
+
+            })
         }
     })
 }
@@ -349,10 +372,16 @@ function validateService() {
     }
 
     //check for category
-    if ($('#category-options').val() == 'nil') {
+    if ($('#selected_cat').text() == 'Select one') {
         errors.push('category-options');
-        $('#category-options').addClass('border-red');
+        $('#selected_cat').addClass('border-red');
         $('#category').find('span.help-block').text("Add a category to your service.")
+    }
+//check for sub category
+    if ($('#selected_subcat').text() == 'Select one') {
+        errors.push('category-options');
+        $('#selected_subcat').addClass('border-red');
+        $('#subcategory').find('span.help-block').text("Add a subcategory to your service.")
     }
 
     //check for picture
@@ -365,17 +394,37 @@ function validateService() {
     var num = $('#description').code().replace(/(<([^>]+)>)/ig, "").length;
     if (num < 100) {
         errors.push('desc');
+        $('#desc').find('.note-editor').addClass('border-red');
         $('#desc').find('span.help-block').text("The description of your service must be more than 100 words!")
     }
 
-    
+    //check for maxtime
+    console.log($('#maxtime').val())
+    if ($('#maxtime').val() == "") {
+        errors.push("maxtime");
+        $('input#maxtime').addClass("border-red");
+        $('#timereq').find("span.help-block").text("Indicate the maximum time you need to complete your service.")
+    }
+    console.log(errors)
     if (errors.length > 0) {
-         $.smoothScroll({
-        scrollElement: $('html,body'),
-        scrollTarget: '#' + errors[0],
-        speed: 1000
-    });
+        $.smoothScroll({
+            scrollElement: $('html,body'),
+            scrollTarget: '#' + errors[0],
+            speed: 1000
+        });
         return false;
     }
     return true;
+}
+function clean(text){
+    
+    return text.replace("\'",'\"');
+}
+function cleanObject(obj){
+    var newObj = {}
+    $.each(obj,function(key,value){
+       console.log(key + " : " + value);
+     newObj[key] = clean(String(value));
+    })
+    return newObj;
 }

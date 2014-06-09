@@ -19,11 +19,12 @@
                 <div class="center"> <span class="margin15">- or -</span></div>
                 <div class="input-group-dl center">
 
-                    <input type="text" class="input_text" placeholder=" Email" id="email_login">
+                    <input type="text" class="input_form" placeholder=" Email" id="email_login">
                 </div>
                 <div class="input-group-dl center">
 
-                    <input type="password" class="input_text" placeholder=" Password" id="password_login">
+                    <input type="password" class="input_form" placeholder=" Password" id="password_login">
+                    <span class="help-block" id="msignUp_help"></span>
                 </div>
 
                 <div class="center"><button id="login_btn" class="button login_btn">Log in</button></div>
@@ -38,27 +39,27 @@
                 <div class='span100'>
                     <div class="input-group-dl ">
 
-                        <input type="text" class="input_text" placeholder=" Email" id="email_signup">
+                        <input type="text" class="input_form" placeholder=" Email" id="email_signup">
                         <span id="email-help" class="font10 block"></span>
                     </div>
 
                     <div class="input-group-dl">
 
-                        <input type="password" class="input_text" placeholder=" Password" id="password_signup">
+                        <input type="password" class="input_form" placeholder=" Password" id="password_signup">
 
                         <i class="fa fa-eye show_pw"></i>
                         <span id="password-help" class="font10 block"></span>
                     </div>
                     <div class="input-group-dl ">
 
-                        <input type="password" class="input_text" placeholder=" Confirm Password" id="confirm_password">
+                        <input type="password" class="input_form" placeholder=" Confirm Password" id="confirm_password">
                         <span id="confirmPassword-help" class="font10 block"></span>
                     </div>
                     <div class="input-group-dl" data-date-viewmode="years">
-                        <input class="input_text datepicker" data-date-format= "dd/mm/yyyy" size="16" type="text" id="birthdate" placeholder="Date Of Birth" readonly>
+                        <input class="input_form datepicker" data-date-format= "dd/mm/yyyy" size="16" type="text" id="birthdate" placeholder=" Date Of Birth" readonly>
                     </div>
 
-                    <div class="center"><button id="login_btn" class="button login_btn blockedOff">Sign up</button></div>
+                    <div class="center"><button id="signup_btn" class="button login_btn blockedOff">Sign up</button></div>
                     <!--END SIGNUP DETAILS-->
                 </div>
             </div>
@@ -74,3 +75,17 @@
 </div>
 <!-- end login/signup modals-->
 
+
+<!--verify email modal -->
+<div class="modal fade in" id="verifyemail" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                A verification email has been sent to <span id="user_email"></span>. Activate your account now by clicking on the link in the email now!
+            </div>
+        </div>
+    </div>
+</div>
+<!--end of verification email -->
+
+<!--shiny loading buttons-->

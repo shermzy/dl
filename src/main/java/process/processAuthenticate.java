@@ -36,14 +36,14 @@ public class processAuthenticate extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
 //check for whether email exists
-            
+
             if (request.getParameter("type").equalsIgnoreCase("checkEmail")) {
                 if (!UserDAO.checkUserExist((String) request.getParameter("email"))) {
                     out.println("available");
-                    
+
                 } else {
                     out.print("unavailable");
-                    
+
                 }
             }
         } finally {

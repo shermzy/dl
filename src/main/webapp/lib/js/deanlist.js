@@ -34,7 +34,7 @@ function SidebarMenuEffects() {
                         resetMenu();
                         document.removeEventListener(eventtype, bodyClickFn);
                         $('.st-content').toggleClass('overlay');
-                         $('#st-trigger-effects').css("pointer-events","auto");
+                        $('#st-trigger-effects').css("pointer-events", "auto");
                     }
                 };
         buttons.forEach(function(el, i) {
@@ -70,338 +70,481 @@ function SidebarMenuEffects() {
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
+            results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 /* Scroll to */
 (function($) {
-var version = '1.4.13',
-    optionOverrides = {},
-    defaults = {
-      exclude: [],
-      excludeWithin:[],
-      offset: 0,
-
-      // one of 'top' or 'left'
-      direction: 'top',
-
-      // jQuery set of elements you wish to scroll (for $.smoothScroll).
-      //  if null (default), $('html, body').firstScrollable() is used.
-      scrollElement: null,
-
-      // only use if you want to override default behavior
-      scrollTarget: null,
-
-      // fn(opts) function to be called before scrolling occurs.
-      // `this` is the element(s) being scrolled
-      beforeScroll: function() {},
-
-      // fn(opts) function to be called after scrolling occurs.
-      // `this` is the triggering element
-      afterScroll: function() {},
-      easing: 'swing',
-      speed: 400,
-
-      // coefficient for "auto" speed
-      autoCoefficent: 2,
-
-      // $.fn.smoothScroll only: whether to prevent the default click action
-      preventDefault: true
-    },
-
+    var version = '1.4.13',
+            optionOverrides = {},
+            defaults = {
+                exclude: [],
+                excludeWithin: [],
+                offset: 0,
+                // one of 'top' or 'left'
+                direction: 'top',
+                // jQuery set of elements you wish to scroll (for $.smoothScroll).
+                //  if null (default), $('html, body').firstScrollable() is used.
+                scrollElement: null,
+                // only use if you want to override default behavior
+                scrollTarget: null,
+                // fn(opts) function to be called before scrolling occurs.
+                // `this` is the element(s) being scrolled
+                beforeScroll: function() {
+                },
+                // fn(opts) function to be called after scrolling occurs.
+                // `this` is the triggering element
+                afterScroll: function() {
+                },
+                easing: 'swing',
+                speed: 400,
+                // coefficient for "auto" speed
+                autoCoefficent: 2,
+                // $.fn.smoothScroll only: whether to prevent the default click action
+                preventDefault: true
+            },
     getScrollable = function(opts) {
-      var scrollable = [],
-          scrolled = false,
-          dir = opts.dir && opts.dir == 'left' ? 'scrollLeft' : 'scrollTop';
+        var scrollable = [],
+                scrolled = false,
+                dir = opts.dir && opts.dir == 'left' ? 'scrollLeft' : 'scrollTop';
 
-      this.each(function() {
+        this.each(function() {
 
-        if (this == document || this == window) { return; }
-        var el = $(this);
-        if ( el[dir]() > 0 ) {
-          scrollable.push(this);
-        } else {
-          // if scroll(Top|Left) === 0, nudge the element 1px and see if it moves
-          el[dir](1);
-          scrolled = el[dir]() > 0;
-          if ( scrolled ) {
-            scrollable.push(this);
-          }
-          // then put it back, of course
-          el[dir](0);
-        }
-      });
-
-      // If no scrollable elements, fall back to <body>,
-      // if it's in the jQuery collection
-      // (doing this because Safari sets scrollTop async,
-      // so can't set it to 1 and immediately get the value.)
-      if (!scrollable.length) {
-        this.each(function(index) {
-          if (this.nodeName === 'BODY') {
-            scrollable = [this];
-          }
+            if (this == document || this == window) {
+                return;
+            }
+            var el = $(this);
+            if (el[dir]() > 0) {
+                scrollable.push(this);
+            } else {
+                // if scroll(Top|Left) === 0, nudge the element 1px and see if it moves
+                el[dir](1);
+                scrolled = el[dir]() > 0;
+                if (scrolled) {
+                    scrollable.push(this);
+                }
+                // then put it back, of course
+                el[dir](0);
+            }
         });
-      }
 
-      // Use the first scrollable element if we're calling firstScrollable()
-      if ( opts.el === 'first' && scrollable.length > 1 ) {
-        scrollable = [ scrollable[0] ];
-      }
+        // If no scrollable elements, fall back to <body>,
+        // if it's in the jQuery collection
+        // (doing this because Safari sets scrollTop async,
+        // so can't set it to 1 and immediately get the value.)
+        if (!scrollable.length) {
+            this.each(function(index) {
+                if (this.nodeName === 'BODY') {
+                    scrollable = [this];
+                }
+            });
+        }
 
-      return scrollable;
+        // Use the first scrollable element if we're calling firstScrollable()
+        if (opts.el === 'first' && scrollable.length > 1) {
+            scrollable = [scrollable[0]];
+        }
+
+        return scrollable;
     },
-    isTouch = 'ontouchend' in document;
+            isTouch = 'ontouchend' in document;
 
-$.fn.extend({
-  scrollable: function(dir) {
-    var scrl = getScrollable.call(this, {dir: dir});
-    return this.pushStack(scrl);
-  },
-  firstScrollable: function(dir) {
-    var scrl = getScrollable.call(this, {el: 'first', dir: dir});
-    return this.pushStack(scrl);
-  },
+    $.fn.extend({
+        scrollable: function(dir) {
+            var scrl = getScrollable.call(this, {dir: dir});
+            return this.pushStack(scrl);
+        },
+        firstScrollable: function(dir) {
+            var scrl = getScrollable.call(this, {el: 'first', dir: dir});
+            return this.pushStack(scrl);
+        },
+        smoothScroll: function(options, extra) {
+            options = options || {};
 
-  smoothScroll: function(options, extra) {
-    options = options || {};
+            if (options === 'options') {
+                if (!extra) {
+                    return this.first().data('ssOpts');
+                }
+                return this.each(function() {
+                    var $this = $(this),
+                            opts = $.extend($this.data('ssOpts') || {}, extra);
 
-    if ( options === 'options' ) {
-      if ( !extra ) {
-        return this.first().data('ssOpts');
-      }
-      return this.each(function() {
-        var $this = $(this),
-            opts = $.extend($this.data('ssOpts') || {}, extra);
+                    $(this).data('ssOpts', opts);
+                });
+            }
 
-        $(this).data('ssOpts', opts);
-      });
-    }
+            var opts = $.extend({}, $.fn.smoothScroll.defaults, options),
+                    locationPath = $.smoothScroll.filterPath(location.pathname);
 
-    var opts = $.extend({}, $.fn.smoothScroll.defaults, options),
-        locationPath = $.smoothScroll.filterPath(location.pathname);
+            this
+                    .unbind('click.smoothscroll')
+                    .bind('click.smoothscroll', function(event) {
+                        var link = this,
+                                $link = $(this),
+                                thisOpts = $.extend({}, opts, $link.data('ssOpts') || {}),
+                                exclude = opts.exclude,
+                                excludeWithin = thisOpts.excludeWithin,
+                                elCounter = 0, ewlCounter = 0,
+                                include = true,
+                                clickOpts = {},
+                                hostMatch = ((location.hostname === link.hostname) || !link.hostname),
+                                pathMatch = thisOpts.scrollTarget || ($.smoothScroll.filterPath(link.pathname) || locationPath) === locationPath,
+                                thisHash = escapeSelector(link.hash);
 
-    this
-    .unbind('click.smoothscroll')
-    .bind('click.smoothscroll', function(event) {
-      var link = this,
-          $link = $(this),
-          thisOpts = $.extend({}, opts, $link.data('ssOpts') || {}),
-          exclude = opts.exclude,
-          excludeWithin = thisOpts.excludeWithin,
-          elCounter = 0, ewlCounter = 0,
-          include = true,
-          clickOpts = {},
-          hostMatch = ((location.hostname === link.hostname) || !link.hostname),
-          pathMatch = thisOpts.scrollTarget || ( $.smoothScroll.filterPath(link.pathname) || locationPath ) === locationPath,
-          thisHash = escapeSelector(link.hash);
+                        if (!thisOpts.scrollTarget && (!hostMatch || !pathMatch || !thisHash)) {
+                            include = false;
+                        } else {
+                            while (include && elCounter < exclude.length) {
+                                if ($link.is(escapeSelector(exclude[elCounter++]))) {
+                                    include = false;
+                                }
+                            }
+                            while (include && ewlCounter < excludeWithin.length) {
+                                if ($link.closest(excludeWithin[ewlCounter++]).length) {
+                                    include = false;
+                                }
+                            }
+                        }
 
-      if ( !thisOpts.scrollTarget && (!hostMatch || !pathMatch || !thisHash) ) {
-        include = false;
-      } else {
-        while (include && elCounter < exclude.length) {
-          if ($link.is(escapeSelector(exclude[elCounter++]))) {
-            include = false;
-          }
+                        if (include) {
+
+                            if (thisOpts.preventDefault) {
+                                event.preventDefault();
+                            }
+
+                            $.extend(clickOpts, thisOpts, {
+                                scrollTarget: thisOpts.scrollTarget || thisHash,
+                                link: link
+                            });
+                            $.smoothScroll(clickOpts);
+                        }
+                    });
+
+            return this;
         }
-        while ( include && ewlCounter < excludeWithin.length ) {
-          if ($link.closest(excludeWithin[ewlCounter++]).length) {
-            include = false;
-          }
-        }
-      }
-
-      if ( include ) {
-
-        if ( thisOpts.preventDefault ) {
-          event.preventDefault();
-        }
-
-        $.extend( clickOpts, thisOpts, {
-          scrollTarget: thisOpts.scrollTarget || thisHash,
-          link: link
-        });
-        $.smoothScroll( clickOpts );
-      }
     });
 
-    return this;
-  }
-});
+    $.smoothScroll = function(options, px) {
+        if (options === 'options' && typeof px === 'object') {
+            return $.extend(optionOverrides, px);
+        }
+        var opts, $scroller, scrollTargetOffset, speed,
+                scrollerOffset = 0,
+                offPos = 'offset',
+                scrollDir = 'scrollTop',
+                aniProps = {},
+                aniOpts = {},
+                scrollprops = [];
 
-$.smoothScroll = function(options, px) {
-  if ( options === 'options' && typeof px === 'object' ) {
-    return $.extend(optionOverrides, px);
-  }
-  var opts, $scroller, scrollTargetOffset, speed,
-      scrollerOffset = 0,
-      offPos = 'offset',
-      scrollDir = 'scrollTop',
-      aniProps = {},
-      aniOpts = {},
-      scrollprops = [];
+        if (typeof options === 'number') {
+            opts = $.extend({link: null}, $.fn.smoothScroll.defaults, optionOverrides);
+            scrollTargetOffset = options;
+        } else {
+            opts = $.extend({link: null}, $.fn.smoothScroll.defaults, options || {}, optionOverrides);
+            if (opts.scrollElement) {
+                offPos = 'position';
+                if (opts.scrollElement.css('position') == 'static') {
+                    opts.scrollElement.css('position', 'relative');
+                }
+            }
+        }
 
-  if (typeof options === 'number') {
-    opts = $.extend({link: null}, $.fn.smoothScroll.defaults, optionOverrides);
-    scrollTargetOffset = options;
-  } else {
-    opts = $.extend({link: null}, $.fn.smoothScroll.defaults, options || {}, optionOverrides);
-    if (opts.scrollElement) {
-      offPos = 'position';
-      if (opts.scrollElement.css('position') == 'static') {
-        opts.scrollElement.css('position', 'relative');
-      }
-    }
-  }
+        scrollDir = opts.direction == 'left' ? 'scrollLeft' : scrollDir;
 
-  scrollDir = opts.direction == 'left' ? 'scrollLeft' : scrollDir;
+        if (opts.scrollElement) {
+            $scroller = opts.scrollElement;
+            if (!(/^(?:HTML|BODY)$/).test($scroller[0].nodeName)) {
+                scrollerOffset = $scroller[scrollDir]();
+            }
+        } else {
+            $scroller = $('html, body').firstScrollable(opts.direction);
+        }
 
-  if ( opts.scrollElement ) {
-    $scroller = opts.scrollElement;
-    if ( !(/^(?:HTML|BODY)$/).test($scroller[0].nodeName) ) {
-      scrollerOffset = $scroller[scrollDir]();
-    }
-  } else {
-    $scroller = $('html, body').firstScrollable(opts.direction);
-  }
+        // beforeScroll callback function must fire before calculating offset
+        opts.beforeScroll.call($scroller, opts);
 
-  // beforeScroll callback function must fire before calculating offset
-  opts.beforeScroll.call($scroller, opts);
+        scrollTargetOffset = (typeof options === 'number') ? options :
+                px ||
+                ($(opts.scrollTarget)[offPos]() &&
+                        $(opts.scrollTarget)[offPos]()[opts.direction]) ||
+                0;
 
-  scrollTargetOffset = (typeof options === 'number') ? options :
-                        px ||
-                        ( $(opts.scrollTarget)[offPos]() &&
-                        $(opts.scrollTarget)[offPos]()[opts.direction] ) ||
-                        0;
+        aniProps[scrollDir] = scrollTargetOffset + scrollerOffset + opts.offset;
+        speed = opts.speed;
 
-  aniProps[scrollDir] = scrollTargetOffset + scrollerOffset + opts.offset;
-  speed = opts.speed;
+        // automatically calculate the speed of the scroll based on distance / coefficient
+        if (speed === 'auto') {
 
-  // automatically calculate the speed of the scroll based on distance / coefficient
-  if (speed === 'auto') {
+            // if aniProps[scrollDir] == 0 then we'll use scrollTop() value instead
+            speed = aniProps[scrollDir] || $scroller.scrollTop();
 
-    // if aniProps[scrollDir] == 0 then we'll use scrollTop() value instead
-    speed = aniProps[scrollDir] || $scroller.scrollTop();
+            // divide the speed by the coefficient
+            speed = speed / opts.autoCoefficent;
+        }
 
-    // divide the speed by the coefficient
-    speed = speed / opts.autoCoefficent;
-  }
+        aniOpts = {
+            duration: speed,
+            easing: opts.easing,
+            complete: function() {
+                opts.afterScroll.call(opts.link, opts);
+            }
+        };
 
-  aniOpts = {
-    duration: speed,
-    easing: opts.easing,
-    complete: function() {
-      opts.afterScroll.call(opts.link, opts);
-    }
-  };
+        if (opts.step) {
+            aniOpts.step = opts.step;
+        }
 
-  if (opts.step) {
-    aniOpts.step = opts.step;
-  }
+        if ($scroller.length) {
+            $scroller.stop().animate(aniProps, aniOpts);
+        } else {
+            opts.afterScroll.call(opts.link, opts);
+        }
+    };
 
-  if ($scroller.length) {
-    $scroller.stop().animate(aniProps, aniOpts);
-  } else {
-    opts.afterScroll.call(opts.link, opts);
-  }
-};
-
-$.smoothScroll.version = version;
-$.smoothScroll.filterPath = function(string) {
-  return string
-    .replace(/^\//,'')
-    .replace(/(?:index|default).[a-zA-Z]{3,4}$/,'')
-    .replace(/\/$/,'');
-};
+    $.smoothScroll.version = version;
+    $.smoothScroll.filterPath = function(string) {
+        return string
+                .replace(/^\//, '')
+                .replace(/(?:index|default).[a-zA-Z]{3,4}$/, '')
+                .replace(/\/$/, '');
+    };
 
 // default options
-$.fn.smoothScroll.defaults = defaults;
+    $.fn.smoothScroll.defaults = defaults;
 
-function escapeSelector (str) {
-  return str.replace(/(:|\.)/g,'\\$1');
-}
+    function escapeSelector(str) {
+        return str.replace(/(:|\.)/g, '\\$1');
+    }
 
 })(jQuery);
 
 /** Used Only For Touch Devices **/
-( function( window ) {
-	
-	// for touch devices: add class cs-hover to the figures when touching the items
-	if( Modernizr.touch ) {
+(function(window) {
 
-		// classie.js https://github.com/desandro/classie/blob/master/classie.js
-		// class helper functions from bonzo https://github.com/ded/bonzo
+    // for touch devices: add class cs-hover to the figures when touching the items
+    if (Modernizr.touch) {
 
-		function classReg( className ) {
-			return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
-		}
+        // classie.js https://github.com/desandro/classie/blob/master/classie.js
+        // class helper functions from bonzo https://github.com/ded/bonzo
 
-		// classList support for class management
-		// altho to be fair, the api sucks because it won't accept multiple classes at once
-		var hasClass, addClass, removeClass;
+        function classReg(className) {
+            return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+        }
 
-		if ( 'classList' in document.documentElement ) {
-			hasClass = function( elem, c ) {
-				return elem.classList.contains( c );
-			};
-			addClass = function( elem, c ) {
-				elem.classList.add( c );
-			};
-			removeClass = function( elem, c ) {
-				elem.classList.remove( c );
-			};
-		}
-		else {
-			hasClass = function( elem, c ) {
-				return classReg( c ).test( elem.className );
-			};
-			addClass = function( elem, c ) {
-				if ( !hasClass( elem, c ) ) {
-						elem.className = elem.className + ' ' + c;
-				}
-			};
-			removeClass = function( elem, c ) {
-				elem.className = elem.className.replace( classReg( c ), ' ' );
-			};
-		}
+        // classList support for class management
+        // altho to be fair, the api sucks because it won't accept multiple classes at once
+        var hasClass, addClass, removeClass;
 
-		function toggleClass( elem, c ) {
-			var fn = hasClass( elem, c ) ? removeClass : addClass;
-			fn( elem, c );
-		}
+        if ('classList' in document.documentElement) {
+            hasClass = function(elem, c) {
+                return elem.classList.contains(c);
+            };
+            addClass = function(elem, c) {
+                elem.classList.add(c);
+            };
+            removeClass = function(elem, c) {
+                elem.classList.remove(c);
+            };
+        }
+        else {
+            hasClass = function(elem, c) {
+                return classReg(c).test(elem.className);
+            };
+            addClass = function(elem, c) {
+                if (!hasClass(elem, c)) {
+                    elem.className = elem.className + ' ' + c;
+                }
+            };
+            removeClass = function(elem, c) {
+                elem.className = elem.className.replace(classReg(c), ' ');
+            };
+        }
 
-		var classie = {
-			// full names
-			hasClass: hasClass,
-			addClass: addClass,
-			removeClass: removeClass,
-			toggleClass: toggleClass,
-			// short names
-			has: hasClass,
-			add: addClass,
-			remove: removeClass,
-			toggle: toggleClass
-		};
+        function toggleClass(elem, c) {
+            var fn = hasClass(elem, c) ? removeClass : addClass;
+            fn(elem, c);
+        }
 
-		// transport
-		if ( typeof define === 'function' && define.amd ) {
-			// AMD
-			define( classie );
-		} else {
-			// browser global
-			window.classie = classie;
-		}
+        var classie = {
+            // full names
+            hasClass: hasClass,
+            addClass: addClass,
+            removeClass: removeClass,
+            toggleClass: toggleClass,
+            // short names
+            has: hasClass,
+            add: addClass,
+            remove: removeClass,
+            toggle: toggleClass
+        };
 
-		[].slice.call( document.querySelectorAll( 'ul.grid > li > figure' ) ).forEach( function( el, i ) {
-			el.querySelector( 'figcaption > a' ).addEventListener( 'touchstart', function(e) {
-				e.stopPropagation();
-			}, false );
-			el.addEventListener( 'touchstart', function(e) {
-				classie.toggle( this, 'cs-hover' );
-			}, false );
-		} );
+        // transport
+        if (typeof define === 'function' && define.amd) {
+            // AMD
+            define(classie);
+        } else {
+            // browser global
+            window.classie = classie;
+        }
 
+        [].slice.call(document.querySelectorAll('ul.grid > li > figure')).forEach(function(el, i) {
+            el.querySelector('figcaption > a').addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+            }, false);
+            el.addEventListener('touchstart', function(e) {
+                classie.toggle(this, 'cs-hover');
+            }, false);
+        });
+
+    }
+
+})(window);
+
+//image compressor
+
+var imageCompressor = {
+    /**
+     * Receives an Image Object (can be JPG OR PNG) and returns a new Image Object compressed
+     * @param {Image} source_img_obj The source Image Object
+     * @param {Integer} quality The output quality of Image Object
+     * @return {Image} result_image_obj The compressed Image Object
+     */
+
+    compress: function(source_img_obj_src, source_img_obj, quality, output_format) {
+
+        var mime_type = "image/jpeg";
+        if (output_format != undefined && output_format == "png") {
+            mime_type = "image/png";
+        }
+       
+       console.log(source_img_obj);
+        var image = new Image;
+        image.src = source_img_obj_src;
+        
+        var cvs = document.createElement('canvas');
+        cvs.width = source_img_obj[0].naturalWidth;
+        cvs.height = source_img_obj[0].naturalHeight;
+        console.log(cvs.width + " " + cvs.height);
+        var ctx = cvs.getContext("2d").drawImage(image, 0, 0);
+        var newImageData = cvs.toDataURL(mime_type, quality / 100);
+        var result_image_obj = new Image();
+        result_image_obj.src = newImageData;
+        return result_image_obj;
+    },
+    /**
+     * Receives an Image Object and upload it to the server via ajax
+     * @param {Image} compressed_img_obj The Compressed Image Object
+     * @param {String} The server side url to send the POST request
+     * @param {String} file_input_name The name of the input that the server will receive with the file
+     * @param {String} filename The name of the file that will be sent to the server
+     * @param {function} the callback to trigger when the upload is finished.
+     */
+
+    upload: function(compressed_img_obj, upload_url, file_input_name, filename, callback) {
+
+
+        var cvs = document.createElement('canvas');
+        cvs.width = compressed_img_obj.naturalWidth;
+        cvs.height = compressed_img_obj.naturalHeight;
+        var ctx = cvs.getContext("2d").drawImage(compressed_img_obj, 0, 0);
+
+        //ADD sendAsBinary compatibilty to older browsers
+        if (XMLHttpRequest.prototype.sendAsBinary === undefined) {
+            XMLHttpRequest.prototype.sendAsBinary = function(string) {
+                var bytes = Array.prototype.map.call(string, function(c) {
+                    return c.charCodeAt(0) & 0xff;
+                });
+                this.send(new Uint8Array(bytes).buffer);
+            };
+        }
+
+        var type = "image/jpeg";
+        if (filename.substr(-4) == ".png") {
+            type = "image/png";
+        }
+
+        var data = cvs.toDataURL(type);
+        data = data.replace('data:' + type + ';base64,', '');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', upload_url, true);
+        var boundary = 'someboundary';
+
+        xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+        xhr.sendAsBinary(['--' + boundary, 'Content-Disposition: form-data; name="' + file_input_name + '"; filename="' + filename + '"', 'Content-Type: ' + type, '', atob(data), '--' + boundary + '--'].join('\r\n'));
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(this.responseText);
+            }
+        };
+
+
+    }
+};
+// top bar scroll effect
+;(function ( $, window, document, undefined ) {
+
+	var pluginName = "scrollUpMenu";
+	var defaults = {
+			waitTime: 100,
+			transitionTime:100,
+			menuCss: { 'position': 'fixed', 'top': '0'}
+	};
+
+	var lastScrollTop = 0;				
+	var $header;
+	var timer;
+	var pixelsFromTheTop;
+
+	// The actual plugin constructor
+	function Plugin ( element, options ) {
+		this.element = element;
+		this.settings = $.extend( {}, defaults, options );
+		this._defaults = defaults;
+		this._name = pluginName;
+		this.init();
 	}
 
-})( window );
+	Plugin.prototype = {
+		init: function () {
+			
+			var self = this;
+			$header = $(this.element);
+			$header.css(self.settings.menuCss);
+			pixelsFromTheTop = $header.height();
+			
+			$header.next().css({ 'margin-top': pixelsFromTheTop });
+		
+			$(window).bind('scroll',function () {
+				clearTimeout(timer);
+				timer = setTimeout(function() {
+					self.refresh(self.settings) 
+				}, self.settings.waitTime );
+			});
+		},
+		refresh: function (settings) { 
+			// Stopped scrolling, do stuff...				   			
+			var scrollTop = $(window).scrollTop();
+
+			if (scrollTop > lastScrollTop && scrollTop > pixelsFromTheTop){ // ensure that the header doesnt disappear too early
+				// downscroll
+				$header.addClass("nav-up");
+			} else {
+				// upscroll
+				$header.removeClass("nav-up");
+			}
+			lastScrollTop = scrollTop;
+		}
+	};
+
+	$.fn[ pluginName ] = function ( options ) {
+		return this.each(function() {
+				if ( !$.data( this, "plugin_" + pluginName ) ) {
+						$.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+				}
+		});
+	};
+
+})( jQuery, window, document );

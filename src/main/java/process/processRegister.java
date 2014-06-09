@@ -6,6 +6,7 @@
 package process;
 
 import DAO.UserDAO;
+import com.util.Email;
 import com.util.PasswordHash;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,20 +42,26 @@ public class processRegister extends HttpServlet {
             String email = (String) request.getParameter("email");
             String password = (String) request.getParameter("password");
             String dob = (String) request.getParameter("dob");
+
             UUID uuid = null;
             String token = "";
             if (request.getParameter("type") != null) {
                 try {
                     if (request.getParameter("type").equalsIgnoreCase("facebook_login")) {
-                        
-                        int id = UserDAO.registerUser(email, "nil", dob, "facebook_login");
-                        out.println(id);
+
+                        boolean register = UserDAO.registerUser(email, "nil", dob, "facebook_login");
+                        out.println(register);
                     } else {
-                        
+
                         password = PasswordHash.createHash(password);
                         uuid = UUID.randomUUID();
                         token = uuid.toString();
-                        UserDAO.registerUser(email, password, dob, token);
+                        boolean success = UserDAO.registerUser(email, password, dob, token);
+                        if (success) {
+                            //send an email to user to verify it. Parameters will be user email and uuid
+                            Email e = new Email(email);
+                            e.signupEmail("user_email=" + email + "&verification_id=" + uuid);
+                        }
                     }
 
                 } catch (Exception ex) {

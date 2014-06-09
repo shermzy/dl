@@ -12,21 +12,25 @@ var date_count = 0;
 $('#fb_login').click(function() {
     fb_login();
 });
-//sign up link at the bottom of login/signup modal
+//Log in view. Enable sign up button
 function enableSignup() {
+    authenticateLogin();
+
     $('#signup_link').click(function() {
         $('#login_body').slideToggle(function() {
             $('#user_authentication_title').text("Sign Up");
             $('#signup_body').slideToggle();
+            $('#email_signup').focus();
             $('#login_footer').html("Already have an account? <span class='clickable' id='login_link'><a>Log in</a></span>");
             enableLogin();
+
         });
 
 
     });
 }
 
-//log in link at the bottom of login/signup modal
+//sign up view.enable log in link at the bottom of login/signup modal
 
 function enableLogin() {
 
@@ -36,15 +40,53 @@ function enableLogin() {
             $('#login_body').slideToggle();
             $('#login_footer').html("Don't have an account yet? <span class='clickable' id='signup_link'><a>Sign up now!</a></span>");
             enableSignup();
+
         });
     });
     initSignupValidation();
 
 }
+function authenticateLogin() {
+    //if login key is press
+    $('#login_btn').click(function() {
+        $.post('processLogin',
+                {type: 'manual_login',
+                    email: $('#email_login').val(),
+                    password: $('#password_login').val()
+                }
+        , function(success) {
+            if (success) {
+                window.location.href = "home";
+            } else {
+                $('#msignUp_help').text('Incorrect email or password');
+            }
+        })
+    })
+    //if 'enter key is pressed
+    $('#login').keypress(function(event) {
 
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $.post('processLogin',
+                    {type: 'manual_login',
+                        email: $('#email_login').val(),
+                        password: $('#password_login').val()
+                    }
+            , function(success) {
+                if (success) {
+                    window.location.href = "home";
+                } else {
+                    $('#msignUp_help').text('Incorrect email or password');
+                }
+            })
+        }
+        event.stopPropagation();
+    });
+}
 function signupInit() {
-    $('button#login_btn').click(function() {
-        console.log("processSignup")
+    $('button#signup_btn').click(function() {
+        $('#login').modal('hide');
+        $('#fullscreen_load').show();
         $.post('processRegister',
                 {type: 'signup',
                     email: $('#email_signup').val(),
@@ -52,14 +94,23 @@ function signupInit() {
                     dob: $('#birthdate').val()}
         , function(success) {
 
+            $('#fullscreen_load').hide();
+            $('#verifyemail').modal('show');
+            $('#user_email').text($('#email_signup').val());
+            setTimeout(function() {
+                window.location.href = "home"
+            }, 5000)
+
         })
     })
 }
-function update() {
 
+
+function update() {
+    console.log("update:" + (email + password + confirmPassword + dob));
     if ((email + password + confirmPassword + dob) == 4) {
 
-        $('button#login_btn').removeClass('blockedOff');
+        $('button#signup_btn').removeClass('blockedOff');
         signupInit();
     }
 }
@@ -83,8 +134,9 @@ function initSignupValidation() {
                 if ($.trim(response) === "available" && validEmail) {
 
                     //no existing email in database and it is a valid email
-                    $('#email_signup').removeClass('error');
-                    $('#email-help').html('Email is available <i class="fa fa-check"></i>').addClass('success green');
+                    $('#email_signup').removeClass('border-red');
+                    $('#email-help').html('Email is available <i class="fa fa-check"></i>').addClass('success green').removeClass('error');
+                    ;
                     email = true;
                     update();
                 } else if ($.trim(response) === "unavailable" && validEmail) {
@@ -263,7 +315,7 @@ function initSignupValidation() {
 
             thisid = this.$elem.attr('id');
 
-            this.$elem.addClass(this.options.strengthClass).attr('data-password', thisid).after('<input style="display:none" class="input_text ' + this.options.strengthClass + '" placeholder=" Password" data-password="' + thisid + '" type="text" name="" value=""><div class="' + this.options.strengthMeterClass + '"><div id="pw_strength" data-meter="' + thisid + '"><p></p></div></div>');
+            this.$elem.addClass(this.options.strengthClass).attr('data-password', thisid).after('<input style="display:none" class="form-control ' + this.options.strengthClass + '" placeholder=" Password" data-password="' + thisid + '" type="text" name="" value=""><div class="' + this.options.strengthMeterClass + '"><div id="pw_strength" data-meter="' + thisid + '"><p></p></div></div>');
 
             this.$elem.bind('keyup keydown', function(event) {
                 thisval = $('#' + thisid).val();

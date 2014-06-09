@@ -8,7 +8,7 @@
 $('#job_description').summernote({height: 300});
 $(document).ready(function() {
     function closeEditorWarning() {
-        return 'If you leave before submitting your changes will be lost.'
+        return 'If you leave before submitting, your changes will be lost.'
     }
 
     window.onbeforeunload = closeEditorWarning

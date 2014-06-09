@@ -29,12 +29,11 @@
             <!--Category-->
             <div class="form-group cat-wrapper" id="category">
                 <label class="control-label">Category:</label>
-                <select class="form-control tipsarea" id="category-options">
-                    <option value="nil">Select one..</option>
-                    <option value="Business">Business</option>
-                    <option value="IT">Programming and IT</option>
-                    <option value="Writing">Writing and Presentation</option>
-                </select>
+                <div class="dropdown">
+                    <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_cat">Select one<b class="caret"></b></div>
+                    <ul class="dropdown-menu serviceDropdown" role="menu" id="category-list">
+                    </ul>
+                </div>
                 <span class="help-block">
 
                 </span>
@@ -45,8 +44,11 @@
             <!--SubCategory-->
             <div class="form-group cat-wrapper" id="subcategory">
                 <label class="control-label">Sub Category:</label>
-                <select class="form-control tipsarea" id="subcategory-options">
-                </select>
+                <div class="dropdown">
+                    <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_subcat">Select one<b class="caret"></b></div>
+                    <ul class="dropdown-menu serviceDropdown" role="menu" id="subcategory-list">
+                    </ul>
+                </div>
                 <span class="help-block">
                 </span>
             </div>
@@ -92,7 +94,7 @@
         <div class="form-group" id="timereq">
             <label class="control-label">Maximum time required to complete:</label>
             <div class="time-cost tipsarea"> I will deliver your requirement in
-                <input id="maxtime" class="span10 form-control time" type="text" name="maxtime" value=""/> days.</p>
+                <input class="span10 form-control inline" type="text" id="maxtime"/> days.</p>
             </div>
 
             <span class="help-block">
@@ -141,4 +143,4 @@
     <script src="lib/plugins/jquery-tags-input/jquery.tagsinput.js"></script>
     <script src="lib/plugins/maxlength/maxlength.js"></script>
     <script src="lib/plugins/bootstrap-summernote/summernote.js"></script>
-    <script src="lib/js/formsInit.js"></script>
+    <script src="lib/js/service.js"></script>

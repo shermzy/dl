@@ -29,14 +29,14 @@ for (var i = 0; i < 45; i++) {
 var count = 0;
 assignmentArray.forEach(function(data) {
     var content = "";
-    content += '<div class="assignment_wrapper"><figure><div><img src="' + data.image + '" alt="img05"></div><figcaption>';
+   /* content += '<div class="assignment_wrapper"><figure><div><img src="' + data.image + '" alt="img05"></div><figcaption>';
             content += '<h5 class="green">' + data.name + '</h5>';
     content += '		<span>' + data.owner + '</span>';
     content += '	';
     content += ' </figcaption>';
     content += '</figure>';
-    content += '</div>';
-    /* content += '  <div class="assignment_wrapper clickable grid cs-style44" id="' + data.id + '">';
+    content += '</div>';*/
+     content += '  <div class="assignment_wrapper clickable grid cs-style44" id="' + data.id + '">';
      content += '  <div class="assignment_body">';
      content += '    <div class="merc_pic">';
      content += '      <img src="' + data.image + '" class="assignment_img"/>';
@@ -46,7 +46,7 @@ assignmentArray.forEach(function(data) {
      content += '<div class="assignment_footer">';
      content += '<div class="assignment_merc pull-left">by ' + data.owner + '</div> ';
      content += '</div>';
-     content += '</div>';*/
+     content += '</div>';
      if(count % 3 == 0){
      $(content).appendTo('#col-1');
      }else if (count % 3 ==1){

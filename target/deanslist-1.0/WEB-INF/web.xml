@@ -17,7 +17,7 @@
         <servlet-name>post</servlet-name>
         <jsp-file>/action/post.jsp</jsp-file>
     </servlet>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>offer</servlet-name>
         <url-pattern>/offer</url-pattern>
     </servlet-mapping>
@@ -41,7 +41,16 @@
         <servlet-name>home</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>verify_email</servlet-name>
+        <url-pattern>/verify_email</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>verify_email</servlet-name>
+        <jsp-file>/static/successVerification.jsp</jsp-file>
+    </servlet>
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
+
 </web-app>
