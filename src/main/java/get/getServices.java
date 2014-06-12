@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package get;
 
 import DAO.ServiceDAO;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -38,11 +38,17 @@ public class getServices extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
-       //get all services LIMIT =10;
-            System.out.println("in here");
-            String rowFrom = (String) request.getParameter("rowFrom");
-            JSONArray services = ServiceDAO.getServices(rowFrom);
-            out.println(services);
+            //get all services LIMIT =10;
+            if (request.getParameter("type").equals("pages")) {
+                String rowFrom = (String) request.getParameter("rowFrom");
+                JSONArray services = ServiceDAO.getServices(rowFrom);
+                out.println(services);
+            } else if (request.getParameter("type").equals("single")) {
+                String service_id = (String) request.getParameter("id");
+                JSONObject service = ServiceDAO.getSingleService(service_id);
+                out.println(service);
+            } else {
+            }
         } finally {
             out.close();
         }

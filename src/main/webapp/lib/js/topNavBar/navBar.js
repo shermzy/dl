@@ -54,9 +54,9 @@ function logout() {
 }
 
 function loggedInNav() {
-    var content = '<li class="top_nav_btn"><i class="icon-magnifier"></i></li>';
-    content += '<li class="top_nav_btn"><i class="icon-plus"></i></li>';
-    content += '<li class="top_nav_btn"><i class="icon-user"></i></li>';
+    var content = '<a href="home"><li class="top_nav_btn"><i class="icon-magnifier"></i></li></a>';
+    content += '<a href="post"><li class="top_nav_btn"><i class="icon-plus"></i></li></a>';
+    content += '<a href="profile"><li class="top_nav_btn"><i class="icon-user"></i></li></a>';
     content += '<li class="top_nav_btn" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">';
     content += '<img class="profilePic"><span class="username"></span></li>';
     content += '<ul class="dropdown-menu userDropDown"  role="menu" aria-labelledby="dLabel">';

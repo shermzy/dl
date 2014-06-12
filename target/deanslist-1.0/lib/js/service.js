@@ -24,10 +24,31 @@ $(document).ready(function() {
     }
 
     populateDropdown();
-
+    initItemreq();
 });
+function deleteRow() {
+    $('.delete_button').click(function() {
+        $(this).closest('tr').remove();
 
+    })
 
+}
+function addOffer() {
+
+    var table = '';
+    table += '<tr>';
+    table += '<td> <input class="form-control required"></td>';
+    table += '<td class="center"> <i class="fa fa-times-circle delete_button"></i></td>';
+    table += '</tr>';
+    $(table).appendTo($('#itemReq_htable'));
+    deleteRow();
+}
+function initItemreq() {
+
+    $('#add_item').click(function() {
+        addOffer();
+    });
+}
 
 //start image input
 +function($) {
@@ -218,21 +239,7 @@ $('#itemsreq').summernote({height: 300});
 
 
 preventCharsInput($('#maxtime'));
-function preventCharsInput(ele) {
-    ele.keypress(function(e) {
-        var a = [];
-        var k = e.which;
 
-        for (i = 48; i < 58; i++)
-            a.push(i);
-
-        if (!($.inArray(k, a) >= 0))
-            e.preventDefault();
-    });
-    $(ele).bind("paste", function(e) {
-        e.preventDefault();
-    });
-}
 //tags input
 
 $('#tags').tagsInput({
@@ -302,10 +309,10 @@ var assignment = {title: "<h5><b>Introduce your service</b></h5>", content: "Thi
 var category = {title: "<h5><b>Categorise your Service</b></h5>", content: "Choose the most suitable category for your service. This allows people to find it more easily."};
 var coverPic = {title: "<h5><b>Strut your stuff</b></h5>", content: "A picture speaks a thousand words. Show an image of you or what you can do!"};
 var desc = {title: "<h5><b>Decribe your service</b></h5>", content: "Giving a description of what you can do can allow buyers to know your skills and abilities better. <b>Be true</b> and <b>be detailed</b>!"};
-var timereq = {title: "<h5><b>Time required for your service</b></h5>", content: "How long will take to complete the above service? Make an accurate estimation of the <b>maximum</b> time you need to complete it. Failing to deliver it on time will result in forfeiting of payment and downgrading of your ratings."};
-var itemreq = {title: "<h5><b>What do you need</b></h5>", content: "Specify the things you need the client to present to you that is critical for the completion of the assignment. <b>Do not</b> request for more than the things you need."};
-var tag = {title: "<h5><b>Keywords. Makes searching easier</b></h5>", content: "Specify keywords to identify your service. This helps buyers to find relevant results based on how you classify your service!"};
-var tips = {assignment: assignment, category: category, coverPic: coverPic, desc: desc, timereq: timereq, itemreq: itemreq, tag: tag};
+var timereq = {title: "<h5><b>How quickly can you deliver?</b></h5>", content: "How quickly can you deliver your work is a huge representation of how efficient you are. Stating a realistic efficiency level not only allow clients to gauge how <b>proficient</b> or <b>efficient</b> you are, but also manage their expectations on your deliverables"};
+var specialty = {title: "<h5><b>What makes you different</b></h5>", content: "Everyone is unique in their own ways. What is your X-factor that makes you stnad out from the crowd?"};
+var tagging = {title: "<h5><b>Keywords. Makes searching easier</b></h5>", content: "Specify keywords to identify your service. This helps buyers to find relevant results based on how you classify your service!"};
+var tips = {assignment: assignment, category: category, coverPic: coverPic, desc: desc, timereq: timereq, specialty: specialty, tagging: tagging};
 $('.form-group').on({
     mouseover: function() {
         var e = this.id;
@@ -315,11 +322,11 @@ $('.form-group').on({
                         <div class="popover-title">' + tips[e].title + '</div>\n\
                         <div class="popover-content"><p>' + tips[e].content + '</p>\n\
                         </div></div>';
-        $(popover).insertBefore($(this).find('.tipsarea'));
+        $(popover).prependTo($(this));
         $('.tips').show();
     },
     mouseleave: function() {
-        $('.tips').remove();
+        //$('.tips').remove();
     },
     click: function() {
         $(this).off('mouseleave');
@@ -335,7 +342,10 @@ function save() {
         proceed = validateService();
 
         if (proceed) {
-            console.log("cat in L: " + $('#selected_cat').data("category"));
+            var a="";
+           reqItems.forEach(function(data){
+               a += data + ";";
+           })
             var user_service = {};
             user_service.user_id = user.id;
             user_service.title = "I can " + $('#title').val();
@@ -346,7 +356,7 @@ function save() {
             user_service.imgLink = user.id + "_" + new Date().getTime();
             user_service.description = $('#description').code();
             user_service.maxtime = $('#maxtime').val();
-            user_service.itemreq = $('#itemsreq').code();
+            user_service.itemreq = a;
             user_service.tags = $('#tags').val();
             user_service.timeCreated = new Date().getTime();
             console.log(user_service);
@@ -361,7 +371,7 @@ function save() {
         }
     })
 }
-
+  var reqItems = [];
 function validateService() {
     errors.length = 0;
     // check for title
@@ -405,6 +415,21 @@ function validateService() {
         $('input#maxtime').addClass("border-red");
         $('#timereq').find("span.help-block").text("Indicate the maximum time you need to complete your service.")
     }
+    //check for required items
+  
+    var itemCount = 0;
+    var requiredItemsCount = $('.required').length;
+    reqItems.length=0;
+    $('.required').each(function() {
+        if ($(this).val().trim() != "") {
+            reqItems.push($(this).val());
+            itemCount++;
+            
+        }
+    })
+    if(reqItems.length < requiredItemsCount){
+        $('#itemreq').find("span.help-block").text("You have additional items not filled in. Empty items will not be considered.")
+    }
     console.log(errors)
     if (errors.length > 0) {
         $.smoothScroll({
@@ -416,15 +441,15 @@ function validateService() {
     }
     return true;
 }
-function clean(text){
-    
-    return text.replace("\'",'\"');
+function clean(text) {
+
+    return text.replace("\'", '\"');
 }
-function cleanObject(obj){
+function cleanObject(obj) {
     var newObj = {}
-    $.each(obj,function(key,value){
-       console.log(key + " : " + value);
-     newObj[key] = clean(String(value));
+    $.each(obj, function(key, value) {
+        console.log(key + " : " + value);
+        newObj[key] = clean(String(value));
     })
     return newObj;
 }

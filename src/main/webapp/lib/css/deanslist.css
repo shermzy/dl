@@ -13,6 +13,10 @@ and open the template in the editor.
 /*
 IDs
 */
+body#main{
+    background:url('../../images/bg/mainbg_1.jpg');
+    background-attachment:fixed;
+}
 #verifyemail{
     overflow-y:hidden
 }
@@ -36,7 +40,7 @@ IDs
 }
 #service_details{
     box-shadow: 2px 0 6px 0 rgba(0,0,0,0.1);
-    background:#fff;
+    background:#ECECEC;
     //padding-top: 20px;
     color:#444;
 }
@@ -85,6 +89,9 @@ select#category-options{
 }
 .serviceDropdown li{
     padding:10px;
+}
+.btn{
+    outline:0
 }
 .white{
     color:#fff !important
@@ -143,6 +150,9 @@ FONT TYPES
 /*
 MANDATORY STYLES
 */
+.padding20{
+    padding:20px;
+}
 .marginTop_20{
     margin-top: 20px;
 }
@@ -153,6 +163,43 @@ MANDATORY STYLES
 .cat-box{
     width: 100%;
     height: 135px;
+}
+.marginleft15{
+    margin-left:15px;
+}
+.margin15{
+    margin:15px 15px 15px 15px;
+}
+
+.margin10{
+    margin:10px 10px 10px 10px;
+}
+.marginleft_5p{
+    margin-left:5%
+}
+.marginleft_10p{
+    margin-left:10%
+}
+
+.marginleft_15p{
+    margin-left:15%
+}
+.form-sharp{
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    outline:0;
 }
 .form-group{
     margin-bottom:33px;
@@ -179,16 +226,7 @@ justify{
     margin-top:15px;
     margin-bottom:15px;
 }
-.margin_left_15{
-    margin-left:15px;
-}
-.margin15{
-    margin:15px 15px 15px 15px;
-}
 
-.margin10{
-    margin:10px 10px 10px 10px;
-}
 .span10{
     width:10% !important;
 
@@ -232,6 +270,12 @@ justify{
 .span70{
     width:70% !important;
 
+}
+.span85{
+    width:85% !important;
+}
+.span90{
+    width:90% !important;
 }
 .span100{
     width:100% !important;
@@ -310,6 +354,9 @@ CONTENT
     background:#000 !important;
     color:#fff !important;
 }
+.bg_white{
+    background:#fff !important
+}
 .modal-dialog.wide{
     width: 70%;
 }
@@ -373,8 +420,10 @@ CONTENT
     width: 100px;
     display: inline-block;
 }
+.required_service,
 .desc-service{
     border-bottom:1px solid #D5D5D5;
+    padding: 15px;
 }
 .username_information{
     background: #333;
@@ -411,17 +460,19 @@ a.btn.default:hover{
     width: 70%;
 
 }
-.offerings{
 
-    padding: 20px;
+.offerings{
+    position:relative;
 }
 .leftbreak10{
     margin-left:10%
 }
 .overlay{
-    background:rgba(0,0,0,0.8);
-    height:100%;
-    position:fixed;
+    background: rgba(0,0,0,0.7);
+    height: 100%;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
 }
 .username{
     font-family: Lato;
@@ -443,7 +494,7 @@ a.btn.default:hover{
     border-radius: 50%;
 }
 .service_img{
-    width:95%;
+    width:100%;
     // box-shadow: 5px 5px 7px #000;
 }
 .service_header{
@@ -452,27 +503,30 @@ a.btn.default:hover{
     border-bottom: 1px solid #E4E1E1
 }
 .service_wrapper:hover{
-    /*    border: 2px solid #FFBB0D;
-        border-radius: 15px;
-        -moz-box-shadow: inset 0 0 10px #D5D528;
-        -webkit-box-shadow: inset 0 0 10px #D5D528;
-        box-shadow: inset 0 0 25px #D5D528;
-        border-top: 2px solid #FBFFA1;
-        color: #fff;*/
-    border: 2px solid #000;
+    /*  border: 2px solid #FFBB0D;
+      
+      -moz-box-shadow: inset 0 0 10px #D5D528;
+      -webkit-box-shadow: inset 0 0 10px #D5D528;
+      box-shadow: inset 0 0 25px #D5D528;
+      border-top: 2px solid #fff;*/
+    box-shadow: 0 0 10px #d3d3d3;
+    border: 2px solid #D3D3D3;
+    // border: 2px solid #FF9105;
 }
 .service_wrapper{
     padding: 10px;
     border-radius: 5px;
-    border: 2px solid #D3D3D3;
+    //border: 2px solid #D3D3D3;
     margin-bottom: 15px;
-    box-shadow: 0 0 10px #d3d3d3;
+    //box-shadow: 0 0 10px #d3d3d3;
+    background: rgba(0,0,0,0.5);
+    color: #D3D3D3;
 }
 .service_meta{
     width: 33%;
     font-size: 2em;
     text-align: center;
-    color: #838383;
+    color: #D3D3D3;
     padding: 3px;
 }
 .service_merc,
@@ -530,9 +584,8 @@ a.btn.default:hover{
     padding-top:70px;
     outline:0 !important;
 }
-.margin10{
-    margin:0 10px 0 10px;
-}
+
+
 .login_dialog{
     width:400px !important;
 }
@@ -748,7 +801,7 @@ body,
 .st-content,
 .st-content-inner {
     position: relative;
-    background:rgb(247, 247, 247);
+    // background:rgb(247, 247, 247);
     min-height:640px;
 }
 
@@ -892,14 +945,17 @@ textarea{
 }
 .control-label{
     font-size:1em;
-    margin-bottom: 20px;
+    position:absolute;
+    top:0;
+    left:0;
 }
 .standardized-text{
     position: absolute;
-    top: 47px;
-    left: 6px;
+    top: 7px;
+    left: 130px;
     color: #A7A7A7;
     font-size: 2rem;
+
 }
 .posting-wrapper,
 .position-form,
@@ -912,15 +968,17 @@ textarea{
 }
 .cat-wrapper{
     float:left;
-    width: 30%;
-    margin-right: 10%
+    width: 40%;
 }
 .posting-wrapper{
     position: relative;
-    padding: 30px;
+    padding: 20px;
     border: 1px solid #D1D1D1;
     margin-right: 15%;
 }
+.popover.right > .arrow {
+    top:20% !important
+}    
 .btn.large-green{
     //font-weight:bold;
     text-transform: uppercase;
@@ -955,8 +1013,8 @@ textarea{
 }
 .tips{
     z-index: 0 !important;
-    top: -15px !important;
-    left: 825px !important;
+    top: -21px !important;
+    left: 835px !important;
     min-width: 276px;
 }
 .footer{

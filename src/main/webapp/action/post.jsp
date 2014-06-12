@@ -17,113 +17,143 @@
 
         <!--Assignment Introduction - 100 char limit-->
         <div class="form-group" id="assignment">
-            <label class="control-label">Title:</label>
-            <textarea class="form-control tipsarea font20 assignment-intro-text" id="title" maxlength='80' rows="2"></textarea>
-            <span class="standardized-text">I can</span>
-            <span class="help-block">
-
-            </span>
-        </div>
-        <!-- Assignment Intro End-->
-        <div class="cat-box">
-            <!--Category-->
-            <div class="form-group cat-wrapper" id="category">
-                <label class="control-label">Category:</label>
-                <div class="dropdown">
-                    <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_cat">Select one<b class="caret"></b></div>
-                    <ul class="dropdown-menu serviceDropdown" role="menu" id="category-list">
-                    </ul>
-                </div>
+            <label class="control-label span15">Title:</label>
+            <div class="span85 pull-right">
+                <textarea class="form-control tipsarea font20 service-intro-text" id="title" maxlength='80' rows="2"></textarea>
+                <span class="standardized-text">I can</span>
                 <span class="help-block">
 
                 </span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- Assignment Intro End-->
+        <div class="form-group" id="category">
+            <!--Category-->
+            <div class="form-group cat-wrapper marginleft_15p" >
+                <label class="cat-label ">Category:</label>
+                <div class="span100">
+                    <div class="dropdown">
+                        <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_cat">Select one<b class="caret"></b></div>
+                        <ul class="dropdown-menu serviceDropdown" role="menu" id="category-list">
+                        </ul>
+                    </div>
+                    <span class="help-block">
+
+                    </span>
+                </div>
             </div>
             <!-- Category End-->
 
 
             <!--SubCategory-->
-            <div class="form-group cat-wrapper" id="subcategory">
-                <label class="control-label">Sub Category:</label>
-                <div class="dropdown">
-                    <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_subcat">Select one<b class="caret"></b></div>
-                    <ul class="dropdown-menu serviceDropdown" role="menu" id="subcategory-list">
-                    </ul>
+            <div class="form-group cat-wrapper marginleft_5p" id="subcategory">
+                <label class="cat-label">Sub Category:</label>
+                <div class="span100">
+                    <div class="dropdown">
+                        <div class="form-control tipsarea" role="button" data-toggle="dropdown" href="#" id="selected_subcat">Select one<b class="caret"></b></div>
+                        <ul class="dropdown-menu serviceDropdown" role="menu" id="subcategory-list">
+                        </ul>
+                    </div>
+                    <span class="help-block">
+                    </span>
                 </div>
-                <span class="help-block">
-                </span>
             </div>
+            <div class="clearfix"></div>
             <!-- SubCategory End-->
         </div>
         <div class="clearfix"></div>
         <!-- Image upload-->
         <div class="form-group" id="coverPic">
-            <label class="control-label">Cover Image:</label>
-            <!--   <form action="#" class="dropzone tipsarea" id="my-dropzone">
-               </form>-->
-            <div class="fileinput fileinput-new tipsarea"  data-provides="fileinput">
-                <div class="fileinput-preview thumbnail" id="coverpic_wrapper" data-trigger="fileinput">
-                </div>
-                <div>
-                    <span class="btn default btn-file">
+            <label class="control-label span15">Cover Image:</label>
+            <div class="span85 pull-right">
+                <div class="fileinput fileinput-new tipsarea"  data-provides="fileinput">
+                    <div class="fileinput-preview thumbnail" id="coverpic_wrapper" data-trigger="fileinput">
+                    </div>
+                    <div>
+                        <span class="btn default btn-file">
 
-                        <input type="file" name="cover" id="cover">
-                    </span>
-                    <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput" id="cover-x">
-                        X </a>
+                            <input type="file" name="cover" id="cover">
+                        </span>
+                        <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput" id="cover-x">
+                            X </a>
+                    </div>
                 </div>
+                <span class="help-block">
+                </span>
             </div>
-            <span class="help-block">
-            </span>
-
+            <div class="clearfix"></div>
         </div>
         <!-- Image End-->
 
         <!--Description-->
         <div class="form-group" id="desc">
-            <label class="control-label">Description:</label>
-            <div name="description" class="tipsarea" id="description">
-            </div>
-            <div class="word-count" id="desc_wordcount"></div>
-            <span class="help-block">
+            <label class="control-label span15">Description:</label>
+            <div class="span85 pull-right">
+                <div name="description" class="tipsarea" id="description">
+                </div>
+                <div class="word-count" id="desc_wordcount"></div>
+                <span class="help-block">
 
-            </span>
+                </span>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <!-- Description End-->
 
         <!--Time required to deliver-->
         <div class="form-group" id="timereq">
-            <label class="control-label">Maximum time required to complete:</label>
-            <div class="time-cost tipsarea"> I will deliver your requirement in
-                <input class="span10 form-control inline" type="text" id="maxtime"/> days.</p>
+            <label class="control-label span15">Efficiency</label>
+            <div class="span85 pull-right">
+                <div class="time-cost tipsarea"> I can deliver my work in
+                    <input class="span15 form-control inline" type="text" id="maxtime"/> days.</p>
+                </div>
+
+                <span class="help-block">
+
+                </span>
             </div>
-
-            <span class="help-block">
-
-            </span>
+            <div class="clearfix"></div>
         </div>
         <!-- Time required to deliver End-->
 
         <!--Requirements-->
-        <div class="form-group" id="itemreq">
-            <label class="control-label">Things you need: </label>
-            <div name="itemsreq" class="tipsarea" id="itemsreq">
-            </div>
-            <span class="help-block">
+        <div class="form-group tipsarea " id="specialty">
+            <label class="control-label span15">Specialty</label>
+            <div class="span85 pull-right">
+                
+                    <button class="btn btn-success" id="add_item">Add specialty</button>
+                    <table class="table table-striped marginTop_20" id="specialty_table">
+                        <tr>
+                            <th class="span70">Specialty</th><th class="span15 center">Delete</th>
+                        <tr><td> <input class="form-control required"></td> <td class="center"> <i class="fa fa-times-circle delete_button"></i></td></tr>
+                        </tr>
 
-            </span>
+                    </table>
+
+
+          
+                <span class="help-block">
+
+                </span>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <!-- Requirements End-->
 
         <!-- Custom tags-->
-        <div class="form-group" id="tag">
+        <div class="form-group" id="tagging">
 
-            <label class="control-label">Tags:</label>
+            <label class="control-label span15">Tags:</label>
+            <div class="span85 pull-right" id="tag">
             <input id="tags" type="text" class="form-control tipsarea tags medium" />
 
             <span class="help-block">
 
             </span>
-
+            </div>
+            <div class="clearfix"></div>
         </div>
         <!-- Custom tags End-->
 

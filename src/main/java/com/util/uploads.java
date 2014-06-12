@@ -67,9 +67,7 @@ public class uploads extends HttpServlet {
             output.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            out.close();
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

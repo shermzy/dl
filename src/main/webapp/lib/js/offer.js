@@ -12,32 +12,76 @@ $(document).ready(function() {
     }
 
     window.onbeforeunload = closeEditorWarning
-    console.log("scroll!");
     $.smoothScroll({
-        scrollElement: $('html,body'),
-        scrollTarget: '#buyer_desc',
+        scrollElement: $('body'),
+        scrollTarget: '#offerings',
         speed: 1000
     });
+    initService();
     initOffer();
     initGrandTotal();
     return false;
 
 
 });
+function initService() {
+    var service_id = getUrlParameter("service_id");
+    $.get('getServices', {type: 'single', id: service_id}, function(response) {
 
-function click() {
+        console.log(response);
+        displayService(response);
 
-    $('#test').click(function() {
-        console.log("scroll!");
-        $('.content').animate({
-            scrollTop: $("#buyer_desc").offset().top}, // Tell it to scroll to the top #bottom
-        '5000' // How long scroll will take in milliseconds
-                );
-        return false;
-    })
-
+    }, "json")
 }
 
+function displayService(service) {
+
+
+    for (key in service) {
+
+        if (key == 'piclink') {
+            $('#' + key).attr("src", function() {
+                return service[key];
+            })
+
+        } else if (key == 'itemreq') {
+            var s = service[key].split(";");
+            var b = "";
+            s.forEach(function(a) {
+                b += "<span class='reqItems block'><i class='icon-key'></i><span class='marginleft15'>" + a + "</span></span>";
+            })
+            $('#' + key).html(b)
+        } else {
+            $('#' + key).html(service[key]);
+        }
+    }
+    $('#createdAt').livestamp(service.timeCreated / 1000);
+
+    $('#offerings').on({
+        mouseover: function() {
+            var e = this.id;
+            $('.tips').remove();
+
+            var popover = '<div class="popover tips right"><div class="arrow"></div>\n\
+                        <div class="popover-title"><b>How does an offer works?</b></div>\n\
+                        <div class="popover-content"><p>State the amount for the primary job scope that is required to be done. Additional offers can be added to\n\
+incentivise the student to do more if it is within his/her means.<br/></br/>\n\
+<b>eg. of additional offers includes (but not limited to) :</b><ul>\n\
+<li>Completing the required job scope within a shorter period of time</li>\n\
+<li>Using standards commonly used by professionals to complete the job</li>\n\
+<li>Providing additional solutions on top of what is required</li>\n\
+</ul> </p>\n\
+                        </div></div>';
+            $(popover).insertBefore($(this).find('.tipsarea'));
+            $('.tips').show();
+        },
+        mouseleave: function() {
+            $('.tips').remove();
+        }
+    })
+
+    preventCharsInput($('#hours'));
+}
 function addOffer() {
 
     var table = '';

@@ -100,5 +100,49 @@ public class ServiceDAO {
         }
         return services;
     }
+    
+       public static JSONObject getSingleService(String service_id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        String query = "";
+        JSONObject service = null;
+        try {
+            //Get database connection & execute query 
+            conn = ConnectionManager.getConnection();
+
+            query += "SELECT * from service where service_id = " + service_id;
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            ResultSetMetaData meta = rs.getMetaData();
+            int colCount = meta.getColumnCount();
+            while (rs.next()) {
+                 service = new JSONObject();
+                for (int column = 1; column <= colCount; column++) {
+                    Object value = rs.getObject(column);
+                    String columnName = meta.getColumnName(column);
+                    if (value != null) {
+                        service.put(columnName,value);
+                    } else {
+                           service.put(columnName,"null"); // you need this to keep your columns in sync....
+                    }
+                }
+                
+            }
+            
+        } catch (SQLException e) {
+            //insertedLine = 100; 
+            System.out.println(e.getMessage());
+
+        } catch (Exception ex) {
+            //insertedLine = 101; 
+            ex.printStackTrace();
+        } finally {
+            //Close connection, statement and resultset 
+            ConnectionManager.close(conn, ps, rs);
+        }
+        return service;
+    }
 
 }
