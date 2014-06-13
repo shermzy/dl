@@ -73,8 +73,8 @@ var count = 0;
 function getServices() {
     $.get("getServices", {type: "pages", rowFrom: '0', category_id: "-1"}, function(response) {
         var count = 0;
-       var services = response.services;
-       console.log(services)
+        var services = response.services;
+        console.log(services)
         services.forEach(function(data) {
 
             var content = "";
@@ -194,10 +194,53 @@ function cat_icons(category) {
     }
 }
 function initbtns() {
-    console.log("what")
+    
     $('.cat_sidenav').click(function() {
         var id = $(this).data("category");
+        var count=0
         $.get("getServices", {type: "pages", rowFrom: '0', category_id: id}, function(response) {
-        })
+            var services = response.services;
+            clearPage();
+            services.forEach(function(data) {
+
+                var content = "";
+                content += '  <div class="service_wrapper clickable" id="' + data.service_id + '">';
+                content += '  <div class="service_body">';
+                content += '    <div class="merc_pic">';
+                content += '      <img src="' + data.piclink + '" class="service_img"/>';
+                content += '   </div>';
+                content += '     <div class="merc_desc">' + data.title + '</div>';
+                content += '<div class="service_merc center">' + data.user_id + '</div> ';
+                content += '</div>';
+                content += '<div class="service_footer">';
+                content += '<div class="inline service_meta"><i class="icon-eye"></i></div>';
+                content += '<div class="inline service_meta"><i class="icon-star"></i></div>';
+                content += '<div class="inline service_meta"><i class="icon-graduation"></i></div>';
+                content += '</div>';
+                content += '</div>';
+
+                $('#createdAt').livestamp(data.timeCreated);
+                $('#createdAt').data("livestamp", data.timeCreated)
+                if (count % 3 == 0) {
+                    $(content).appendTo('#col-1');
+                } else if (count % 3 == 1) {
+                    $(content).appendTo('#col-2');
+                }
+                else if (count % 3 == 2) {
+                    $(content).appendTo('#col-3');
+                }
+                serviceArray.push(data);
+
+                count++;
+
+
+            })
+            showAssignment();
+        },"json")
     });
+}
+function clearPage(){
+    $('#col-1').html("");
+    $('#col-2').html("");
+    $('#col-3').html("");
 }

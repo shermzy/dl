@@ -708,7 +708,6 @@ if (typeof jQuery === 'undefined') {
 
         var $parent = getParent($this)
         var isActive = $parent.hasClass('open') || $this.hasClass('open')
-
         clearMenus()
 
         if (!isActive) {
@@ -722,15 +721,17 @@ if (typeof jQuery === 'undefined') {
 
             if (e.isDefaultPrevented())
                 return
-            if (!$parent.hasClass('open')) {
-                $parent
-                        .toggleClass('open')
-                        .trigger('shown.bs.dropdown', relatedTarget)
-            } else if($(this).hasClass('open')){
-                $this
-                        .toggleClass('open')
-                        .trigger('shown.bs.dropdown', relatedTarget)
-            }
+
+
+            $parent
+                    .toggleClass('open')
+                    .trigger('shown.bs.dropdown', relatedTarget)
+
+
+            $this
+                    .toggleClass('open')
+                    .trigger('shown.bs.dropdown', relatedTarget)
+
 
 
             $this.focus()
@@ -792,16 +793,16 @@ if (typeof jQuery === 'undefined') {
                 } else {
                     $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
                     $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-                    
+
                 }
             } else {
                 if (!$(this).hasClass('open')) {
                     return;
                 } else {
-                    
+
                     $(this).trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
                     $(this).removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-                    
+
                 }
             }
             if (e.isDefaultPrevented())
