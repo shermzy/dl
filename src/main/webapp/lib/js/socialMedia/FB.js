@@ -38,6 +38,7 @@ window.fbAsyncInit = function() {
                             {type: 'fb_login',
                                 email: response.email,
                                 username: response.name,
+                                profilepic:"https://graph.facebook.com/" + response.id + "/picture?width=120",
                                 channel: 'facebook'
                             }
                     , function(success) {
@@ -100,7 +101,9 @@ function fb_login() {
                                     {type: 'facebook_login',
                                         email: response.email,
                                         password: $('#password_signup').val(),
-                                        dob: response.birthday
+                                        dob: response.birthday,
+                                        username:response.name,
+                                        profile_pic:"https://graph.facebook.com/" + response.id + "/picture?width=120"
                                     }
                             , function(success) {
                                 console.log(success);

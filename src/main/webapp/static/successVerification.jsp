@@ -70,6 +70,6 @@
 
         setTimeout(function() {
 
-            window.location.href = "home";
+           // window.location.href = "home";
         }, 3000);
     </script>
