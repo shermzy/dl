@@ -71,10 +71,11 @@ function testService() {
 }
 var count = 0;
 function getServices() {
-    $.get("getServices", {type: "pages", rowFrom: '0'}, function(response) {
+    $.get("getServices", {type: "pages", rowFrom: '0', category_id: "-1"}, function(response) {
         var count = 0;
-        console.log(response)
-        response.forEach(function(data) {
+       var services = response.services;
+       console.log(services)
+        services.forEach(function(data) {
 
             var content = "";
             content += '  <div class="service_wrapper clickable" id="' + data.service_id + '">';
@@ -163,7 +164,7 @@ function getCategories() {
             content += '  <li><span class="menu-divider"></span></li>';
         })
         $('#cat-menu').html(content);
-
+        initbtns();
     }, "json")
 }
 
@@ -191,4 +192,12 @@ function cat_icons(category) {
         default:
             return"null"
     }
+}
+function initbtns() {
+    console.log("what")
+    $('.cat_sidenav').click(function() {
+        var id = $(this).data("category");
+        $.get("getServices", {type: "pages", rowFrom: '0', category_id: id}, function(response) {
+        })
+    });
 }

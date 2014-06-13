@@ -40,15 +40,20 @@ public class getServices extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             //get all services LIMIT =10;
             if (request.getParameter("type").equals("pages")) {
+                String category_id = (String) request.getParameter("category_id");
                 String rowFrom = (String) request.getParameter("rowFrom");
-                JSONArray services = ServiceDAO.getServices(rowFrom);
-                out.println(services);
+                JSONArray services = ServiceDAO.getServices(rowFrom, category_id);
+                JSONObject batch = new JSONObject();
+                batch.put("services", services);
+                batch.put("lastRow", Integer.parseInt(rowFrom) + 10);
+                out.println(batch);
             } else if (request.getParameter("type").equals("single")) {
                 String service_id = (String) request.getParameter("id");
                 JSONObject service = ServiceDAO.getSingleService(service_id);
                 out.println(service);
             } else {
             }
+        } catch (Exception ex) {
         } finally {
             out.close();
         }

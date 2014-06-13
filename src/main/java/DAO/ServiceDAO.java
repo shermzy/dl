@@ -57,18 +57,23 @@ public class ServiceDAO {
         return success;
     }
 
-    public static JSONArray getServices(String rowFrom) {
+    public static JSONArray getServices(String rowFrom, String category_id) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
+
         String query = "";
         JSONArray services = new JSONArray();
         try {
-            //Get database connection & execute query 
+            
             conn = ConnectionManager.getConnection();
-
-            query += "SELECT * from service limit " + rowFrom + ",10";
+            //when user is looking for all services without specific category
+            if (category_id.equals("-1")) {
+                query += "SELECT * from service limit " + rowFrom + ",10";
+            } else {
+                query += "SELECT * from service where category='" + category_id + "' limit " + rowFrom + ",10";
+            }
             st = conn.createStatement();
             rs = st.executeQuery(query);
             ResultSetMetaData meta = rs.getMetaData();
@@ -79,9 +84,9 @@ public class ServiceDAO {
                     Object value = rs.getObject(column);
                     String columnName = meta.getColumnName(column);
                     if (value != null) {
-                        service.put(columnName,value);
+                        service.put(columnName, value);
                     } else {
-                           service.put(columnName,"null"); // you need this to keep your columns in sync....
+                        service.put(columnName, "null"); // you need this to keep your columns in sync....
                     }
                 }
                 services.put(service);
@@ -100,8 +105,8 @@ public class ServiceDAO {
         }
         return services;
     }
-    
-       public static JSONObject getSingleService(String service_id) {
+
+    public static JSONObject getSingleService(String service_id) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -118,19 +123,19 @@ public class ServiceDAO {
             ResultSetMetaData meta = rs.getMetaData();
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                 service = new JSONObject();
+                service = new JSONObject();
                 for (int column = 1; column <= colCount; column++) {
                     Object value = rs.getObject(column);
                     String columnName = meta.getColumnName(column);
                     if (value != null) {
-                        service.put(columnName,value);
+                        service.put(columnName, value);
                     } else {
-                           service.put(columnName,"null"); // you need this to keep your columns in sync....
+                        service.put(columnName, "null"); // you need this to keep your columns in sync....
                     }
                 }
-                
+
             }
-            
+
         } catch (SQLException e) {
             //insertedLine = 100; 
             System.out.println(e.getMessage());
