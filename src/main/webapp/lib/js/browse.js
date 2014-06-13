@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 getServices();
+getCategories();
 var serviceArray = [];
 var categories = ["Business", "IT", "Writing"];
 var Business = ["Branding Services", "Market Research", "Psychological Consulting", "IT Consulting", "Business Consulting", "Financial Consulting", "Legal Consulting", "Others"]
@@ -127,8 +128,8 @@ function showAssignment() {
 
                     } else if (key == 'itemreq') {
                         var s = service[key].split(";");
-                        var b="";
-                        s.forEach(function(a){
+                        var b = "";
+                        s.forEach(function(a) {
                             b += "<span class='reqItems block'><i class='icon-key'></i><span class='marginleft15'>" + a + "</span></span>";
                         })
                         $('#' + key).html(b)
@@ -137,7 +138,7 @@ function showAssignment() {
                     }
                 }
                 $('#createdAt').livestamp(service.timeCreated / 1000);
-          serviceID = id;
+                serviceID = id;
                 return false
             }
         })
@@ -152,4 +153,42 @@ function initOffer() {
         //pass in assignment id
         window.open('offer?service_id=' + serviceID, '_blank');
     })
+}
+function getCategories() {
+    $.get("getCategories", {type: 'category'}, function(data) {
+        var content = "";
+
+        $.each(data, function(key, value) {
+            content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
+            content += '  <li><span class="menu-divider"></span></li>';
+        })
+        $('#cat-menu').html(content);
+
+    }, "json")
+}
+
+function cat_icons(category) {
+    switch (category) {
+        case "Business":
+            return "icon-briefcase"
+            break;
+        case "Online Marketing":
+            return "icon-call-end"
+            break;
+        case "Writing & Translation":
+            return "icon-pencil";
+            break;
+        case "Video and Animation":
+            return "icon-camcorder";
+            break;
+        case "Music and Audio":
+            return "icon-playlist";
+            break;
+        case "Programming and IT":
+            return "icon-screen-desktop";
+        case "Lifestyle":
+            return "icon-emoticon-smile"
+        default:
+            return"null"
+    }
 }

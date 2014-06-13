@@ -57,7 +57,12 @@ function displayService(service) {
     }
     $('#createdAt').livestamp(service.timeCreated / 1000);
 
-    $('#offerings').on({
+tipsInit();
+
+    preventCharsInput($('#hours'));
+}
+function tipsInit(){
+        $('#offerings').on({
         mouseover: function() {
             var e = this.id;
             $('.tips').remove();
@@ -72,15 +77,31 @@ incentivise the student to do more if it is within his/her means.<br/></br/>\n\
 <li>Providing additional solutions on top of what is required</li>\n\
 </ul> </p>\n\
                         </div></div>';
-            $(popover).insertBefore($(this).find('.tipsarea'));
+            $(popover).prependTo($(this));
             $('.tips').show();
         },
         mouseleave: function() {
             $('.tips').remove();
         }
     })
+    
+            $('#timereq').on({
+        mouseover: function() {
+            var e = this.id;
+            $('.tips').remove();
 
-    preventCharsInput($('#hours'));
+            var popover = '<div class="popover tips right"><div class="arrow"></div>\n\
+                        <div class="popover-title"><b>How many estimated manhours are required to complete the primary job?</b></div>\n\
+                        <div class="popover-content"><p>Giving a rough gauge of how long this project will take based on past experience will\n\
+allow students to know if they are suitable for the job.</p>\n\
+                        </div></div>';
+            $(popover).prependTo($(this));
+            $('.tips').show();
+        },
+        mouseleave: function() {
+            $('.tips').remove();
+        }
+    })
 }
 function addOffer() {
 

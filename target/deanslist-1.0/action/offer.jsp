@@ -84,8 +84,8 @@
 
                 <!-- end job scope -->
                 <!-- OFFER -->
-                <div class="offerings" id="offerings">
-                    <div class="form-group span100" >
+                <div class="offerings">
+                    <div class="form-group span100" id="offerings" >
                         <label class="control-label span15">Additional Requirements</label>
                         <div class="span85 pull-right">
                             <button class="btn btn-success" id="add_offer">Add offer</button>
@@ -108,7 +108,7 @@
                     </div>
                     <!-- END OFFER -->
                     <!-- START ESTIMATED TIME REQUIRED-->
-                    <div class="form-group span100" >
+                    <div class="form-group span100" id='timereq'>
                         <label class="control-label span15">Estimated time required</label>
                         <div class="span20 marginleft_15p">
                             <div class="input-group">
@@ -127,7 +127,7 @@
 
                     <!-- START MAXIMUM TIME RANGE-->
                     <div class="form-group span100" >
-                        <label class="control-label span15">Offer's duration</label>
+                        <label class="control-label span15">Project's Lifespan</label>
                         <div class="span20 marginleft_15p">
                             <div class="input-group">
                                 <input type="text" class="form-sharp" placeholder="eg.5" id="hours">

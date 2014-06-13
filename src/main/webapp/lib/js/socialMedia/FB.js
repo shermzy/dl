@@ -20,8 +20,8 @@ window.fbAsyncInit = function() {
         if (response.authResponse) {
 
             var parts = location.pathname.split('/');
+            
             //change header
-
             loggedInNav();
             fb_token = response.authResponse.accessToken;
             fb_userId = response.authResponse.userID;
@@ -31,8 +31,8 @@ window.fbAsyncInit = function() {
                 $('.username').text(response.name);
                 $(".profilePic").attr('src', picSrc);
 
-                //handle session creation for user
-           
+                //handle session creation for user 
+
                 if (user == null) {
                     $.post('processLogin',
                             {type: 'fb_login',
@@ -41,18 +41,20 @@ window.fbAsyncInit = function() {
                                 channel: 'facebook'
                             }
                     , function(success) {
-
+                        
                     })
                 }
-
+                //user logged in via facebook
+         
             });
             //enable all js buttons for logged in user
 
 
 
         } else {
+            //check if a session has been created from manual log in
             $.post('processLogin',
-                    {type: 'checkSession',
+                    {type: 'checkSession'
                     }
             , function(success) {
                 if (success) {

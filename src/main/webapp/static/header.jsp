@@ -21,7 +21,6 @@
         %>
     </head>
     <div id="st-container" class="st-container">
-
         <nav class="st-menu st-effect-1" id="menu-1">
             <h2 class="white">Menu</h2>
             <ul>

@@ -26,7 +26,7 @@
 <script src="lib/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="lib/js/topNavBar/navBar.js" type="text/javascript"></script>
 <script src="lib/js/topNavBar/login_signup.js" type="text/javascript"></script>
-
+<script>console.log(user)</script>
 
 </body>
 </html>
