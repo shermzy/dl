@@ -48,13 +48,12 @@ public class uploads extends HttpServlet {
             } else {
                 file = new File(root + "/uploads" + filePath);
             }
-            System.out.println("File : " + file);
-            System.out.println("Filepath : " + filePath);
+
             InputStream input = new FileInputStream(file);
 
             response.setContentLength((int) file.length());
             response.setContentType(new MimetypesFileTypeMap().getContentType(file));
-            System.out.println(response);
+
             OutputStream output = response.getOutputStream();
             byte[] bytes = new byte[BUFFER_LENGTH];
             int read = 0;

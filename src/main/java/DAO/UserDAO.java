@@ -10,9 +10,11 @@ import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import org.json.JSONObject;
 
 /**
  *
@@ -56,13 +58,13 @@ public class UserDAO {
         return isExist;
     }
 
-    public static boolean registerUser(String email, String password, String dob, String token) {
+    public static boolean registerUser(String profile_pic,String username,String email, String password, String dob, String token) {
 
         Date date = new Date();
         long timeMilli = date.getTime();
         String strLong = Long.toString(timeMilli);
-        String query = "insert into user (email,password,date_of_birth,token_register,registered_since) ";
-        query += " values ('" + email + "','" + password + "','" + dob + "','" + token + "','" + strLong + "')";
+        String query = "insert into user (profilepic,username,email,password,date_of_birth,token_register,registered_since) ";
+        query += " values ('" + profile_pic +"','"+ username +"','" + email + "','" + password + "','" + dob + "','" + token + "','" + strLong + "')";
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -143,5 +145,74 @@ public class UserDAO {
         }
 
         return user_password;
+    }
+    public static String getUserId(String email){
+          String GET_USERID = "SELECT user_id FROM `user` WHERE EMAIL='" + email + "'";
+        Connection conn = null;
+     Statement st = null;
+        ResultSet rs = null;
+        String id =null;
+        try {
+        conn = ConnectionManager.getConnection();
+
+            st = conn.createStatement();
+            rs = st.executeQuery(GET_USERID);
+
+            while (rs.next()) {
+               id = String.valueOf(rs.getInt("user_id"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            //Close connection, statement and resultset
+            ConnectionManager.close(conn, st, rs);
+        }
+
+        return id;
+    }
+      public static JSONObject getUserProfile(String user_id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        String query = "";
+        JSONObject user = null;
+        try {
+            //Get database connection & execute query 
+            conn = ConnectionManager.getConnection();
+
+            query += "SELECT * from user where user_id = " + user_id;
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            ResultSetMetaData meta = rs.getMetaData();
+            int colCount = meta.getColumnCount();
+            while (rs.next()) {
+                user = new JSONObject();
+                for (int column = 1; column <= colCount; column++) {
+                    Object value = rs.getObject(column);
+                    String columnName = meta.getColumnName(column);
+                    if (value != null) {
+                        user.put(columnName, value);
+                    } else {
+                        user.put(columnName, "null"); // you need this to keep your columns in sync....
+                    }
+                }
+
+            }
+
+        } catch (SQLException e) {
+            //insertedLine = 100; 
+            System.out.println(e.getMessage());
+
+        } catch (Exception ex) {
+            //insertedLine = 101; 
+            ex.printStackTrace();
+        } finally {
+            //Close connection, statement and resultset 
+            ConnectionManager.close(conn, st, rs);
+        }
+        return user;
     }
 }

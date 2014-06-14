@@ -158,7 +158,7 @@ function initOffer() {
 function getCategories() {
     $.get("getCategories", {type: 'category'}, function(data) {
         var content = "";
-
+console.log(data);
         $.each(data, function(key, value) {
             content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
             content += '  <li><span class="menu-divider"></span></li>';
@@ -179,16 +179,18 @@ function cat_icons(category) {
         case "Writing & Translation":
             return "icon-pencil";
             break;
-        case "Video and Animation":
+        case "Video & Animation":
             return "icon-camcorder";
             break;
-        case "Music and Audio":
+        case "Music & Audio":
             return "icon-playlist";
             break;
-        case "Programming and IT":
+        case "Programming & IT":
             return "icon-screen-desktop";
         case "Lifestyle":
             return "icon-emoticon-smile"
+            case "Graphics & Design":
+            return "icon-picture"
         default:
             return"null"
     }

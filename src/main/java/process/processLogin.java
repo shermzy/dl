@@ -48,8 +48,11 @@ public class processLogin extends HttpServlet {
                 String email = (String) request.getParameter("email");
                 String username = (String) request.getParameter("username");
                 String channel = (String) request.getParameter("channel");
-                String user = SessionManager.createUser(email);
+                String profilepic = (String) request.getParameter("profilepic");
+                String user = SessionManager.createUser(UserDAO.getUserId(email));
+                user = SessionManager.setAttribute(user, "profilepic", profilepic);
                 user = SessionManager.setAttribute(user, "channel", channel);
+                user = SessionManager.setAttribute(user, "username", username);
                 session.setAttribute("user", user);
                 out.println(session.getAttribute("user"));
             } else if (request.getParameter("type").equals("manual_login")) {
@@ -61,7 +64,7 @@ public class processLogin extends HttpServlet {
                     String user_password = UserDAO.verifyPassword(email);
                     boolean verifyPassword = PasswordHash.validatePassword(password, user_password);
                     if (verifyPassword) {
-                        String user = SessionManager.createUser(email);
+                        String user = SessionManager.createUser(UserDAO.getUserId(email));
                         user = SessionManager.setAttribute(user, "channel", "manual_login");
                         session.setAttribute("user", user);
                         out.println(verifyPassword);

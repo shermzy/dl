@@ -39,24 +39,25 @@ public class processRegister extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             System.out.println("processRegister");
+            String username = (String) request.getParameter("username");
             String email = (String) request.getParameter("email");
             String password = (String) request.getParameter("password");
             String dob = (String) request.getParameter("dob");
-
+String profile_pic = (String) request.getParameter("profile_pic");
             UUID uuid = null;
             String token = "";
             if (request.getParameter("type") != null) {
                 try {
                     if (request.getParameter("type").equalsIgnoreCase("facebook_login")) {
 
-                        boolean register = UserDAO.registerUser(email, "nil", dob, "facebook_login");
+                        boolean register = UserDAO.registerUser(profile_pic,username,email, "nil", dob, "facebook_login");
                         out.println(register);
                     } else {
 
                         password = PasswordHash.createHash(password);
                         uuid = UUID.randomUUID();
                         token = uuid.toString();
-                        boolean success = UserDAO.registerUser(email, password, dob, token);
+                        boolean success = UserDAO.registerUser("","",email, password, dob, token);
                         if (success) {
                             //send an email to user to verify it. Parameters will be user email and uuid
                             Email e = new Email(email);

@@ -40,7 +40,7 @@ function addOffer() {
     table += '<td> <input class="form-control required"></td>';
     table += '<td class="center"> <i class="fa fa-times-circle delete_button"></i></td>';
     table += '</tr>';
-    $(table).appendTo($('#itemReq_htable'));
+    $(table).appendTo($('#specialty_table'));
     deleteRow();
 }
 function initItemreq() {
@@ -276,7 +276,7 @@ var populateDropdown = function() {
         $('#category-list li').click(function() {
             $('#selected_cat').html($(this).text() + " <b class='caret'></b>");
             $('#selected_cat').data("category", $(this).data("category"))
-            console.log("cat: " + $('#selected_cat').data("category"))
+            $(this).closest('.dropdown').removeClass('open');
             subcategoryInit();
         })
     }, "json")
@@ -295,7 +295,7 @@ function subcategoryInit() {
         $('#subcategory-list li').click(function() {
             $('#selected_subcat').html($(this).text() + " <b class='caret'></b>");
             $('#selected_subcat').data("category", $(this).data("category"))
-            subcategoryInit();
+            $(this).closest('.dropdown').removeClass('open');
         })
         $('#subcategory').show();
     }, "json")
@@ -310,7 +310,7 @@ var category = {title: "<h5><b>Categorise your Service</b></h5>", content: "Choo
 var coverPic = {title: "<h5><b>Strut your stuff</b></h5>", content: "A picture speaks a thousand words. Show an image of you or what you can do!"};
 var desc = {title: "<h5><b>Decribe your service</b></h5>", content: "Giving a description of what you can do can allow buyers to know your skills and abilities better. <b>Be true</b> and <b>be detailed</b>!"};
 var timereq = {title: "<h5><b>How quickly can you deliver?</b></h5>", content: "How quickly can you deliver your work is a huge representation of how efficient you are. Stating a realistic efficiency level not only allow clients to gauge how <b>proficient</b> or <b>efficient</b> you are, but also manage their expectations on your deliverables"};
-var specialty = {title: "<h5><b>What makes you different</b></h5>", content: "Everyone is unique in their own ways. What is your X-factor that makes you stnad out from the crowd?"};
+var specialty = {title: "<h5><b>What makes you different</b></h5>", content: "Everyone is unique in their own ways. What is your X-factor that makes you stand out from the crowd?"};
 var tagging = {title: "<h5><b>Keywords. Makes searching easier</b></h5>", content: "Specify keywords to identify your service. This helps buyers to find relevant results based on how you classify your service!"};
 var tips = {assignment: assignment, category: category, coverPic: coverPic, desc: desc, timereq: timereq, specialty: specialty, tagging: tagging};
 $('.form-group').on({
@@ -342,12 +342,12 @@ function save() {
         proceed = validateService();
 
         if (proceed) {
-            var a="";
-           reqItems.forEach(function(data){
-               a += data + ";";
-           })
+            var a = "";
+            reqItems.forEach(function(data) {
+                a += data + ";";
+            })
             var user_service = {};
-            user_service.user_id = user.id;
+            user_service.user_id = user.username;
             user_service.title = "I can " + $('#title').val();
             user_service.category = $('#selected_cat').data("category");
             user_service.subcategory = $('#selected_subcat').data("category");
@@ -371,7 +371,7 @@ function save() {
         }
     })
 }
-  var reqItems = [];
+var reqItems = [];
 function validateService() {
     errors.length = 0;
     // check for title
@@ -416,18 +416,18 @@ function validateService() {
         $('#timereq').find("span.help-block").text("Indicate the maximum time you need to complete your service.")
     }
     //check for required items
-  
+
     var itemCount = 0;
     var requiredItemsCount = $('.required').length;
-    reqItems.length=0;
+    reqItems.length = 0;
     $('.required').each(function() {
         if ($(this).val().trim() != "") {
             reqItems.push($(this).val());
             itemCount++;
-            
+
         }
     })
-    if(reqItems.length < requiredItemsCount){
+    if (reqItems.length < requiredItemsCount) {
         $('#itemreq').find("span.help-block").text("You have additional items not filled in. Empty items will not be considered.")
     }
     console.log(errors)

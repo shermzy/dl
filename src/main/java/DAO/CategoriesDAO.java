@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class CategoriesDAO {
     
       public static JSONObject getCategories() {
-        String verify_user = "SELECT * FROM `category`";
+        String get_cat = "SELECT * FROM `category` order by Category_name";
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -29,11 +29,11 @@ public class CategoriesDAO {
             conn = ConnectionManager.getConnection();
 
             st = conn.createStatement();
-            rs = st.executeQuery(verify_user);
+            rs = st.executeQuery(get_cat);
             while (rs.next()) {               
                 categories.put(String.valueOf(rs.getInt("category_id")),rs.getString("category_name"));   
             }
-
+System.out.println(categories);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (Exception ex) {
