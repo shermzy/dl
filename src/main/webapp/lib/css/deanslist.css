@@ -212,10 +212,30 @@ MANDATORY STYLES
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     outline:0;
 }
+.profile_pic{
+    border-radius:50%
+}
+.profile_navbtn{
+    height: 60px;
+    text-align: center;
+    font-size: 1em;
+    line-height: 60px;
+    color: #BEBEBE;
+}
+.profile_profilepic{
+    min-height: 140px
+}
+.profile_sidenav{
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    margin-top: 60px;
+    background: rgba(0,0,0,0.7);
+}
 .cat_sidenav:hover{
     background:rgba(255, 255, 255, 0.8);
-        font-weight:bold;
-        color:#083969
+    font-weight:bold;
+    color:#083969
 }
 .cat_sidenav{
     color:rgba(22, 129, 245, 0.78);
@@ -2206,7 +2226,7 @@ h1 span{
     width: 60px;
     border-top: 1px solid #c6d0da;
     background: rgba(0,0,0,0.5);
-  
+
     -webkit-transition: -webkit-transform 0.3s, width 0.3s;
     -moz-transition: -moz-transform 0.3s, width 0.3s;
     transition: transform 0.3s, width 0.3s;
