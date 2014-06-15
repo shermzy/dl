@@ -13,6 +13,39 @@ and open the template in the editor.
 /*
 IDs
 */
+body{
+    font-family: Lato,"Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+#bio_wrapper{
+    background:rgba(0,0,0,0.5);
+    border: 5px solid rgba(255,255,255,0.2);
+}
+.bio_field a{
+    color:#8ECBFF
+}
+#bio_wrapper label{
+    color:#DBDBDB
+}
+body#profile > .st-container{
+
+    background:
+        linear-gradient(
+        limegreen,
+        transparent
+        ),
+        linear-gradient(
+        90deg,
+        skyblue,
+        transparent
+        ),
+        linear-gradient(
+        -90deg,
+        coral,
+        transparent
+        ) !important;
+
+    background-blend-mode: screen;
+}
 body#main{
     background:url('../../images/bg/mainbg_1.jpg');
     background-attachment:fixed;
@@ -127,7 +160,7 @@ b.caret{
     border-bottom: 1px solid #3C3C3C;
 }
 .fade.in{
-    background:rgba(0,0,0,0.78);
+    // background:rgba(0,0,0,0.78);
 }
 /*CSS TRANSLATION*/
 
@@ -154,6 +187,9 @@ FONT TYPES
 }
 .font20{
     font-size: 2rem;
+}
+.font25{
+    font-size: 2.5em;
 }
 .font_grey{
     color:#B3B3B3;
@@ -213,7 +249,8 @@ MANDATORY STYLES
     outline:0;
 }
 .profile_pic{
-    border-radius:50%
+    border-radius:50%;
+    width:70px;
 }
 .profile_navbtn{
     height: 60px;
@@ -223,7 +260,7 @@ MANDATORY STYLES
     color: #BEBEBE;
 }
 .profile_profilepic{
-    min-height: 140px
+    min-height: 90px
 }
 .profile_sidenav{
     position: fixed;
@@ -253,6 +290,9 @@ MANDATORY STYLES
 }
 .inline{
     display:inline-block !important;
+}
+.bio_field{
+    position:relative
 }
 .clickable{
     cursor:pointer;
@@ -299,6 +339,10 @@ justify{
 }
 .span40{
     width:40%!important;
+
+}
+.span45{
+    width:45%!important;
 
 }
 .span50{
@@ -2379,3 +2423,4 @@ input.gn-search:focus {
         width: 130%
     }
 }
+

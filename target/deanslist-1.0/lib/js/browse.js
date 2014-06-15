@@ -158,11 +158,17 @@ function initOffer() {
 function getCategories() {
     $.get("getCategories", {type: 'category'}, function(data) {
         var content = "";
-console.log(data);
-        $.each(data, function(key, value) {
-            content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
-            content += '  <li><span class="menu-divider"></span></li>';
+        console.log(data);
+        data.forEach(function(response) {
+            $.each(response, function(key, value) {
+                content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
+                content += '  <li><span class="menu-divider"></span></li>';
+            })
         })
+        /*        $.each(data, function(key, value) {
+         content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
+         content += '  <li><span class="menu-divider"></span></li>';
+         })*/
         $('#cat-menu').html(content);
         initbtns();
     }, "json")
@@ -189,17 +195,17 @@ function cat_icons(category) {
             return "icon-screen-desktop";
         case "Lifestyle":
             return "icon-emoticon-smile"
-            case "Graphics & Design":
+        case "Graphics & Design":
             return "icon-picture"
         default:
             return"null"
     }
 }
 function initbtns() {
-    
+
     $('.cat_sidenav').click(function() {
         var id = $(this).data("category");
-        var count=0
+        var count = 0
         $.get("getServices", {type: "pages", rowFrom: '0', category_id: id}, function(response) {
             var services = response.services;
             clearPage();
@@ -238,10 +244,10 @@ function initbtns() {
 
             })
             showAssignment();
-        },"json")
+        }, "json")
     });
 }
-function clearPage(){
+function clearPage() {
     $('#col-1').html("");
     $('#col-2').html("");
     $('#col-3').html("");

@@ -268,10 +268,12 @@ $('#title').maxlength({
 var populateDropdown = function() {
     $.get("getCategories", {type: 'category'}, function(data) {
         var content = "";
-        $.each(data, function(key, value) {
-            content += "<li data-category='" + key + "'>" + value + "</li>";
-            content += "<span class='menu-divider'></span>";
-        })
+        data.forEach(function(response){
+            $.each(response, function(key, value) {
+                content += "<li data-category='" + key + "'>" + value + "</li>";
+                content += "<span class='menu-divider'></span>";
+            })
+        });
         $('#category-list').html(content);
         $('#category-list li').click(function() {
             $('#selected_cat').html($(this).text() + " <b class='caret'></b>");

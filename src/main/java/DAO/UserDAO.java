@@ -185,10 +185,12 @@ public class UserDAO {
 
             query += "SELECT * from user where user_id = " + user_id;
             st = conn.createStatement();
+            
             rs = st.executeQuery(query);
             ResultSetMetaData meta = rs.getMetaData();
             int colCount = meta.getColumnCount();
             while (rs.next()) {
+                
                 user = new JSONObject();
                 for (int column = 1; column <= colCount; column++) {
                     Object value = rs.getObject(column);
@@ -201,6 +203,7 @@ public class UserDAO {
                 }
 
             }
+System.out.println(user);
 
         } catch (SQLException e) {
             //insertedLine = 100; 

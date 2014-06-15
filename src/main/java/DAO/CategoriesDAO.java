@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DAO;
 
 import com.util.ConnectionManager;
@@ -11,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -18,22 +18,25 @@ import org.json.JSONObject;
  * @author Sherman
  */
 public class CategoriesDAO {
-    
-      public static JSONObject getCategories() {
+
+    public static JSONArray getCategories() {
         String get_cat = "SELECT * FROM `category` order by Category_name";
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
-        JSONObject categories = new JSONObject();
+        JSONArray categories = new JSONArray();
+        
         try {
             conn = ConnectionManager.getConnection();
 
             st = conn.createStatement();
             rs = st.executeQuery(get_cat);
-            while (rs.next()) {               
-                categories.put(String.valueOf(rs.getInt("category_id")),rs.getString("category_name"));   
+            while (rs.next()) {
+                JSONObject category = new JSONObject();
+                category.put(String.valueOf(rs.getInt("category_id")), rs.getString("category_name"));
+                categories.put(category);
             }
-System.out.println(categories);
+            System.out.println(categories);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (Exception ex) {
@@ -45,8 +48,8 @@ System.out.println(categories);
 
         return categories;
     }
-      
-      public static JSONObject getSubCategories(String category) {
+
+    public static JSONObject getSubCategories(String category) {
         String verify_user = "SELECT * FROM `subcategory` where category_id =" + category;
         Connection conn = null;
         Statement st = null;
@@ -57,8 +60,8 @@ System.out.println(categories);
 
             st = conn.createStatement();
             rs = st.executeQuery(verify_user);
-            while (rs.next()) {               
-                subcategories.put(String.valueOf(rs.getInt("subcategory_id")),rs.getString("subcategory_name"));   
+            while (rs.next()) {
+                subcategories.put(String.valueOf(rs.getInt("subcategory_id")), rs.getString("subcategory_name"));
             }
 
         } catch (SQLException e) {

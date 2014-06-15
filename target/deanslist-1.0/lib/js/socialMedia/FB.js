@@ -34,6 +34,7 @@ window.fbAsyncInit = function() {
                 //handle session creation for user 
 
                 if (user == null) {
+                    console.log("user not created")
                     $.post('processLogin',
                             {type: 'fb_login',
                                 email: response.email,
@@ -42,7 +43,7 @@ window.fbAsyncInit = function() {
                                 channel: 'facebook'
                             }
                     , function(success) {
-                        
+                        console.log("session created for user")
                     })
                 }
                 //user logged in via facebook

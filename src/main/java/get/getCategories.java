@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -38,7 +39,8 @@ public class getCategories extends HttpServlet {
 
         try {
             if (request.getParameter("type").equals("category")) {
-                JSONObject categories = CategoriesDAO.getCategories();
+                JSONArray categories = CategoriesDAO.getCategories();
+                System.out.println(categories);
                 out.println(categories);
             } else {
                 String subcategory = (String) request.getParameter("subcategory");

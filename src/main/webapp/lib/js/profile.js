@@ -8,6 +8,7 @@
 var target;
 $(document).ready(function() {
     getUser();
+
 })
 
 
@@ -19,12 +20,26 @@ function getProfilePic() {
 
 function getUser() {
     var user_id = getParameterByName("user_id");
-    console.log(user_id);
-    if (user_id != null) {
-        $.get("getUser", function(user) {
-console.log(user);
-        },"json")
+
+    //this handles when viewing someoneelse's profile page
+    if (user_id != "") {
+        $.get("getUser", {userid: user_id}, function(user) {
+            target = user;
+        }, "json")
     } else {
         target = user;
+        initBio();
     }
+    $('#profile_profilepic').attr('src', target.profilepic);
+}
+
+function initBio() {
+    $.fn.editable.defaults.inputclass = 'form-control';
+    $('#username').editable({emptytext: "Username"}, 'validate', function(v) {
+        if (!v)
+            return 'Required field!';
+    });
+      $('#email').editable({
+          emptytext: "Email"
+    });
 }
