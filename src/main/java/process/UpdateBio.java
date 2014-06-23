@@ -6,11 +6,8 @@
 package process;
 
 import DAO.UserDAO;
-import com.util.Email;
-import com.util.PasswordHash;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sherman
  */
-@WebServlet(name = "processRegister", urlPatterns = {"/processRegister"})
-public class processRegister extends HttpServlet {
+@WebServlet(name = "UpdateBio", urlPatterns = {"/UpdateBio"})
+public class UpdateBio extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,37 +35,16 @@ public class processRegister extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            System.out.println("processRegister");
-            String username = (String) request.getParameter("username");
-            String email = (String) request.getParameter("email");
-            String password = (String) request.getParameter("password");
-            String dob = (String) request.getParameter("dob");
-            String profile_pic = (String) request.getParameter("profile_pic");
-            String fb_link = (String) request.getParameter("fb_link");
-
-            UUID uuid = null;
-            String token = "";
-            if (request.getParameter("type") != null) {
-                try {
-                    if (request.getParameter("type").equalsIgnoreCase("facebook_login")) {
-                        boolean register = UserDAO.registerUser(profile_pic, username, email, "nil", dob, "facebook_login",fb_link);
-                        out.println(register);
-                    } else {
-
-                        password = PasswordHash.createHash(password);
-                        uuid = UUID.randomUUID();
-                        token = uuid.toString();
-                        boolean success = UserDAO.registerUser("", "", email, password, dob, token,"");
-                        if (success) {
-                            //send an email to user to verify it. Parameters will be user email and uuid
-                            Email e = new Email(email);
-                            e.signupEmail("user_email=" + email + "&verification_id=" + uuid);
-                        }
-                    }
-
-                } catch (Exception ex) {
-                    System.out.println("user db insertion failed");
-                }
+            /* TODO output your page here. You may use following sample code. */
+            
+            if (request.getParameter("name")!=null) {
+                String column_name = (String)request.getParameter("name");
+                String user_id = (String)request.getParameter("pk");
+                System.out.println("user_id : " + user_id);
+                String update_value = (String) request.getParameter("value");
+                System.out.println("update_value : " + update_value);
+                boolean success = UserDAO.updateBio(user_id,column_name,update_value);
+                System.out.println("update: " + success);
             }
         } finally {
             out.close();

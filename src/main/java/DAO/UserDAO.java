@@ -58,13 +58,14 @@ public class UserDAO {
         return isExist;
     }
 
-    public static boolean registerUser(String profile_pic,String username,String email, String password, String dob, String token) {
+    public static boolean registerUser(String profile_pic, String username, String email, String password, String dob, String token, String fb_link) {
 
         Date date = new Date();
         long timeMilli = date.getTime();
         String strLong = Long.toString(timeMilli);
-        String query = "insert into user (profilepic,username,email,password,date_of_birth,token_register,registered_since) ";
-        query += " values ('" + profile_pic +"','"+ username +"','" + email + "','" + password + "','" + dob + "','" + token + "','" + strLong + "')";
+        String query = "insert into user (profilepic,username,email,password,date_of_birth,token_register,registered_since,fb_link) ";
+        query += " values ('" + profile_pic + "','" + username + "','" + email + "','";
+        query += password + "','" + dob + "','" + token + "','" + strLong + "','" + fb_link + "')";
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -146,20 +147,20 @@ public class UserDAO {
 
         return user_password;
     }
-    public static String getUserId(String email){
-          String GET_USERID = "SELECT user_id FROM `user` WHERE EMAIL='" + email + "'";
-        Connection conn = null;
-     Statement st = null;
-        ResultSet rs = null;
-        String id =null;
-        try {
-        conn = ConnectionManager.getConnection();
 
+    public static String getUserId(String email) {
+        String GET_USERID = "SELECT user_id FROM `user` WHERE EMAIL='" + email + "'";
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        String id = null;
+        try {
+            conn = ConnectionManager.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery(GET_USERID);
 
             while (rs.next()) {
-               id = String.valueOf(rs.getInt("user_id"));
+                id = String.valueOf(rs.getInt("user_id"));
             }
 
         } catch (SQLException e) {
@@ -173,7 +174,8 @@ public class UserDAO {
 
         return id;
     }
-      public static JSONObject getUserProfile(String user_id) {
+
+    public static JSONObject getUserProfile(String userid) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -183,27 +185,26 @@ public class UserDAO {
             //Get database connection & execute query 
             conn = ConnectionManager.getConnection();
 
-            query += "SELECT * from user where user_id = " + user_id;
+            query += "SELECT * from user where user_id = " + userid;
             st = conn.createStatement();
-            
+
             rs = st.executeQuery(query);
             ResultSetMetaData meta = rs.getMetaData();
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                
+
                 user = new JSONObject();
                 for (int column = 1; column <= colCount; column++) {
                     Object value = rs.getObject(column);
                     String columnName = meta.getColumnName(column);
                     if (value != null) {
-                        user.put(columnName, value);
+                        user.put(columnName, String.valueOf(value));
                     } else {
                         user.put(columnName, "null"); // you need this to keep your columns in sync....
                     }
                 }
 
             }
-System.out.println(user);
 
         } catch (SQLException e) {
             //insertedLine = 100; 
@@ -217,5 +218,36 @@ System.out.println(user);
             ConnectionManager.close(conn, st, rs);
         }
         return user;
+    }
+
+    public static boolean updateBio(String user_id, String column_name, String updated_value) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        String update = "";
+        boolean success = false;
+        try {
+            //Get database connection & execute query 
+            conn = ConnectionManager.getConnection();
+            update += "update user set " + column_name + "='" + updated_value + "' where user_id = " + user_id;
+            System.out.println(update);
+            st = conn.createStatement();
+            int response = st.executeUpdate(update);
+            if (response == 1) {
+                success = true;
+            }
+
+        } catch (SQLException e) {
+            //insertedLine = 100; 
+            System.out.println(e.getMessage());
+
+        } catch (Exception ex) {
+            //insertedLine = 101; 
+            ex.printStackTrace();
+        } finally {
+            //Close connection, statement and resultset 
+            ConnectionManager.close(conn, st, rs);
+        }
+        return success;
     }
 }

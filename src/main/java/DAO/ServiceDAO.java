@@ -70,9 +70,9 @@ public class ServiceDAO {
             conn = ConnectionManager.getConnection();
             //when user is looking for all services without specific category
             if (category_id.equals("-1")) {
-                query += "SELECT * from service limit " + rowFrom + ",10";
+                query += "select service.*, username from user inner join service where user.user_id = service.user_id limit " + rowFrom + ",10";
             } else {
-                query += "SELECT * from service where category='" + category_id + "' limit " + rowFrom + ",10";
+                query += "select service.*, username from user inner join service where user.user_id = service.user_id and category='" + category_id + "' limit " + rowFrom + ",10";
             }
             st = conn.createStatement();
             rs = st.executeQuery(query);

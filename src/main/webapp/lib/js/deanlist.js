@@ -514,8 +514,8 @@ var imageCompressor = {
 
     var pluginName = "scrollUpMenu";
     var defaults = {
-        waitTime: 100,
-        transitionTime: 100,
+        waitTime: 0,
+        transitionTime: 0,
         menuCss: {'position': 'fixed', 'top': '0'}
     };
 

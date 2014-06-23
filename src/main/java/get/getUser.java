@@ -37,10 +37,12 @@ public class getUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            
             String user_id = (String) request.getParameter("userid");
             JSONObject user = UserDAO.getUserProfile(user_id);
             System.out.println(user);
-        out.println(user);
+            out.println(user);
+        
         } finally {
             out.close();
         }

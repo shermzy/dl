@@ -64,7 +64,7 @@
                             <div class="service-info">Avg hours to respond</div>   
                         </div>
                     </div>
-                    <button class="button offer-btn" id="offer"><i class='fa fa-money'></i><span class="margin_left_15">Make an offer!</span></button>
+              <!--      <button class="button offer-btn" id="offer"><i class='fa fa-money'></i><span class="margin_left_15">Make an offer!</span></button>-->
                 </div>
                 <div class="clearfix"></div>
             </div>

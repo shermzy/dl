@@ -25,21 +25,56 @@ function getUser() {
     if (user_id != "") {
         $.get("getUser", {userid: user_id}, function(user) {
             target = user;
+            initTarget(target);
         }, "json")
     } else {
-        target = user;
-        initBio();
-    }
-    $('#profile_profilepic').attr('src', target.profilepic);
-}
+        $.get("getUser", {userid: user.id}, function(user) {
+            target = user;
+            initTarget(target);
+            initBio();
+        }, "json")
 
+
+    }
+
+
+}
+function initTarget(target) {
+    $('#bio').addClass('active');
+    $('#profile_profilepic').attr('src', target.profilepic);
+    $('#user_name').text(target.username);
+    $('#email').text(target.email);
+    $('#dob').text(target.date_of_birth);
+    $('#gender').text(target.gender);
+    $('#facebook_link').attr("href",target.fb_link)
+
+}
 function initBio() {
     $.fn.editable.defaults.inputclass = 'form-control';
-    $('#username').editable({emptytext: "Username"}, 'validate', function(v) {
-        if (!v)
-            return 'Required field!';
+    
+    $('#user_name').editable({
+        pk: target.user_id,
+        emptytext: "Username",
+        name: 'username',
+        url: "UpdateBio"
     });
-      $('#email').editable({
-          emptytext: "Email"
+    $('#email').editable({
+        emptytext: "Email",
+        name: 'email',
+        url: "UpdateBio",
+        pk: target.user_id
     });
+    $('#gender').editable({
+        emptytext: "Amoeba",
+        name: 'gender',
+        url: "UpdateBio",
+        pk: target.user_id
+    });
+    $('#fb_link').editable({
+        emptytext: "Facebook"
+    });
+    $('#dob').editable({
+        emptytext: "Date of Birth",
+    });
+
 }

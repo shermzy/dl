@@ -349,7 +349,7 @@ function save() {
                 a += data + ";";
             })
             var user_service = {};
-            user_service.user_id = user.username;
+            user_service.user_id = user.id;
             user_service.title = "I can " + $('#title').val();
             user_service.category = $('#selected_cat').data("category");
             user_service.subcategory = $('#selected_subcat').data("category");
