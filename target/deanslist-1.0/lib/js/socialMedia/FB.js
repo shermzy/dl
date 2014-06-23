@@ -20,7 +20,7 @@ window.fbAsyncInit = function() {
         if (response.authResponse) {
 
             var parts = location.pathname.split('/');
-            
+
             //change header
             loggedInNav();
             fb_token = response.authResponse.accessToken;
@@ -39,15 +39,16 @@ window.fbAsyncInit = function() {
                             {type: 'fb_login',
                                 email: response.email,
                                 username: response.name,
-                                profilepic:"https://graph.facebook.com/" + response.id + "/picture?width=120",
-                                channel: 'facebook'
+                                profilepic: "https://graph.facebook.com/" + response.id + "/picture?width=120",
+                                channel: 'facebook',
+                                fb_link: 'http://www.facebook.com/' + response.id
                             }
                     , function(success) {
                         console.log("session created for user")
                     })
                 }
                 //user logged in via facebook
-         
+
             });
             //enable all js buttons for logged in user
 
@@ -97,14 +98,17 @@ function fb_login() {
 
                         if ($.trim(validateEmail) === 'available') {
                             //if user is not registered, do a registration for them
-
+                            var a = response.birthday.split("/");
+                            var b = a[1] + "/" + a[0] + "/" + a[2];
+                            console.log('http://www.facebook.com/' + response.id);
                             $.post('processRegister',
                                     {type: 'facebook_login',
                                         email: response.email,
                                         password: $('#password_signup').val(),
-                                        dob: response.birthday,
-                                        username:response.name,
-                                        profile_pic:"https://graph.facebook.com/" + response.id + "/picture?width=120"
+                                        dob: b,
+                                        username: response.name,
+                                        profile_pic: "https://graph.facebook.com/" + response.id + "/picture?width=120",
+                                        fb_link: 'http://www.facebook.com/' + response.id
                                     }
                             , function(success) {
                                 console.log(success);

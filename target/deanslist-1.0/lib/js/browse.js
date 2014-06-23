@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-getServices();
-getCategories();
+$(document).ready(function() {
+    getServices("-1");
+    getCategories();
+    initOffer();
+})
+
 var serviceArray = [];
 var categories = ["Business", "IT", "Writing"];
 var Business = ["Branding Services", "Market Research", "Psychological Consulting", "IT Consulting", "Business Consulting", "Financial Consulting", "Legal Consulting", "Others"]
@@ -31,7 +35,7 @@ of the gig, with a SIMPLE and EFFECTIVE desing, with one free modification! Just
     testAssignment.tags = ["HTML5", "CSS3", "web design"];
     testAssignment.user_id = namespace[namerandom];
 
-    serviceArray.push(testAssignment);
+    //  serviceArray.push(testAssignment);
 
 }
 //testService();
@@ -45,7 +49,7 @@ function testService() {
         content += '      <img src="' + data.piclink + '" class="service_img"/>';
         content += '   </div>';
         content += '     <div class="merc_desc">' + data.title + '</div>';
-        content += '<div class="service_merc center">' + data.user_id + '</div> ';
+        content += '<div class="service_merc center">' + data.username+ '</div> ';
         content += '</div>';
         content += '<div class="service_footer">';
         content += '<div class="inline service_meta"><i class="icon-eye"></i></div>';
@@ -61,20 +65,19 @@ function testService() {
         else if (count1 % 3 == 2) {
             $(content).appendTo('#col-3');
         }
-
-
         count1++;
-
-
     })
-    showAssignment();
+    //showAssignment();
 }
 var count = 0;
-function getServices() {
-    $.get("getServices", {type: "pages", rowFrom: '0', category_id: "-1"}, function(response) {
+//MAIN PAGE SERVICES
+function getServices(category) {
+    $('#services').html('');
+    $('#services').html('<div class="col-md-4" id="col-1"></div><div class="col-md-4" id="col-2"></div><div class="col-md-4" id="col-3"></div>')
+    $.get("getServices", {type: "pages", rowFrom: '0', category_id: category}, function(response) {
         var count = 0;
         var services = response.services;
-        console.log(services)
+
         services.forEach(function(data) {
 
             var content = "";
@@ -84,7 +87,7 @@ function getServices() {
             content += '      <img src="' + data.piclink + '" class="service_img"/>';
             content += '   </div>';
             content += '     <div class="merc_desc">' + data.title + '</div>';
-            content += '<div class="service_merc center">' + data.user_id + '</div> ';
+            content += '<div class="service_merc center">' + data.username + '</div> ';
             content += '</div>';
             content += '<div class="service_footer">';
             content += '<div class="inline service_meta"><i class="icon-eye"></i></div>';
@@ -115,13 +118,22 @@ function getServices() {
 }
 
 var serviceID;
+
+//ON CLICK OF A SPECIFIC ITEM
 function showAssignment() {
     $('.service_wrapper').click(function() {
         var id = $(this).attr("id");
+
         serviceArray.forEach(function(service) {
             if (service.service_id == id) {
+                //get user of gig 's details
+                $.get("getUser", {userid: service.user_id}, function(user) {
+                    $('#service_profilepic').attr('src', user.profilepic);
+                    $('#service_userName').text(user.username);
+                }, "json");
+
+                //insert details into different components of the modal with their respective IDs
                 for (key in service) {
-                    console.log(key)
                     if (key == 'piclink') {
                         $('#' + key).attr("src", function() {
                             return service[key];
@@ -134,20 +146,29 @@ function showAssignment() {
                             b += "<span class='reqItems block'><i class='icon-key'></i><span class='marginleft15'>" + a + "</span></span>";
                         })
                         $('#' + key).html(b)
-                    } else {
+                    } else if (key == 'total_revenue') {
+                        if (service.total_revenue == 0 || service.offers == 0) {
+                            $('#average_revenue').text('$0');
+                        } else {
+                            $('#average_revenue').text('$' + service.total_revenue / service.offers)
+                        }
+                    } else if(key == 'offers'){
+                        $('#no_of_offers').text(service.offers)
+                    }else {
                         $('#' + key).html(service[key]);
                     }
                 }
                 $('#createdAt').livestamp(service.timeCreated / 1000);
                 serviceID = id;
-                return false
+                return false;
             }
         })
+
         $('#serviceModal').modal("show");
 
     })
 }
-initOffer();
+
 function initOffer() {
 
     $('#offer').click(function() {
@@ -158,7 +179,6 @@ function initOffer() {
 function getCategories() {
     $.get("getCategories", {type: 'category'}, function(data) {
         var content = "";
-        console.log(data);
         data.forEach(function(response) {
             $.each(response, function(key, value) {
                 content += '<li class="cat_sidenav" data-category="' + key + '"><span class="cat_icon"><i class="' + cat_icons(value) + '"></i></span>' + value + " </li>";
@@ -205,46 +225,10 @@ function initbtns() {
 
     $('.cat_sidenav').click(function() {
         var id = $(this).data("category");
+        console.log('category: ' + id)
         var count = 0
-        $.get("getServices", {type: "pages", rowFrom: '0', category_id: id}, function(response) {
-            var services = response.services;
-            clearPage();
-            services.forEach(function(data) {
+        getServices(id);
 
-                var content = "";
-                content += '  <div class="service_wrapper clickable" id="' + data.service_id + '">';
-                content += '  <div class="service_body">';
-                content += '    <div class="merc_pic">';
-                content += '      <img src="' + data.piclink + '" class="service_img"/>';
-                content += '   </div>';
-                content += '     <div class="merc_desc">' + data.title + '</div>';
-                content += '<div class="service_merc center">' + data.user_id + '</div> ';
-                content += '</div>';
-                content += '<div class="service_footer">';
-                content += '<div class="inline service_meta"><i class="icon-eye"></i></div>';
-                content += '<div class="inline service_meta"><i class="icon-star"></i></div>';
-                content += '<div class="inline service_meta"><i class="icon-graduation"></i></div>';
-                content += '</div>';
-                content += '</div>';
-
-                $('#createdAt').livestamp(data.timeCreated);
-                $('#createdAt').data("livestamp", data.timeCreated)
-                if (count % 3 == 0) {
-                    $(content).appendTo('#col-1');
-                } else if (count % 3 == 1) {
-                    $(content).appendTo('#col-2');
-                }
-                else if (count % 3 == 2) {
-                    $(content).appendTo('#col-3');
-                }
-                serviceArray.push(data);
-
-                count++;
-
-
-            })
-            showAssignment();
-        }, "json")
     });
 }
 function clearPage() {

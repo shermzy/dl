@@ -66,7 +66,7 @@
     </ul>
     <body id="main">
         <div class="content">
-            <div class="container" id="services">
+            <div class="container">
                 <!-- 3 columns of services-->
                 <div  id="services">
                     <div class='col-md-4' id="col-1">
@@ -124,7 +124,8 @@
                     <div class="span25 pull-right" id="service_user_details" >
 
                         <div class="owner-image center">
-                            <img src="images/placeholders/sh_profile.jpg" class="owner-image-holder imageholder" />
+                            <img id="service_profilepic" class="owner-image-holder imageholder" />
+                            
                         </div>
                         <div class="owner-title-wrapper center">
                             <div class="owner-name" id="service_userName"></div>
@@ -133,17 +134,14 @@
 
 
                         <!-- to add service statistics-->
-
-
-
                         <div class="overview-stats">
                             <div class="queue"> 
-                                <div class="service-variable">2</div>
-                                <div class="service-info">no. of orders</div>
+                                <div class="service-variable" id="no_of_offers"></div>
+                                <div class="service-info" >no. of offers</div>
                             </div>
                             <div class="avgTime">
-                                <div class="service-variable">4</div>
-                                <div class="service-info">days on average</div>    
+                                <div class="service-variable" id="average_revenue"></div>
+                                <div class="service-info">Average offer</div>    
                             </div>
                             <div class="respTime">
                                 <div class="service-variable">7</div>

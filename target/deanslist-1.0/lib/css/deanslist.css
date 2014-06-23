@@ -16,6 +16,56 @@ IDs
 body{
     font-family: Lato,"Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
+.modal::-webkit-scrollbar{
+    width:5px;
+}
+::-webkit-scrollbar:hover{
+    width:15px;
+}
+::-webkit-scrollbar {
+    width: 5px;
+} /* this targets the default scrollbar (compulsory) */
+::-webkit-scrollbar-track {
+    background-color: #efefef;
+} /* the new scrollbar will have a flat appearance with the set background color */
+
+::-webkit-scrollbar-thumb {
+    //background-color: rgba(0, 0, 0, 0.2); 
+    border-radius:5px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left top,
+        color-stop(0, #3497ED),
+        color-stop(1, #0D12B3)
+        );
+    background-image: -o-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -moz-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -webkit-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -ms-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: linear-gradient(to left top, #3497ED 0%, #0D12B3 100%);
+} /* this will style the thumb, ignoring the track */
+
+::-webkit-scrollbar-button {
+    //background-color: #7c2929;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left top,
+        color-stop(0, #3497ED),
+        color-stop(1, #0D12B3)
+        );
+    background-image: -o-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -moz-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -webkit-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: -ms-linear-gradient(left top, #3497ED 0%, #0D12B3 100%);
+    background-image: linear-gradient(to left top, #3497ED 0%, #0D12B3 100%);
+    box-shadow:0 0 5px #000;
+} /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+
+::-webkit-scrollbar-corner {
+    background-color: black;
+} /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
 #bio_wrapper{
     background:rgba(0,0,0,0.5);
     border: 5px solid rgba(255,255,255,0.2);
@@ -252,6 +302,21 @@ MANDATORY STYLES
     border-radius:50%;
     width:70px;
 }
+.profile_navbtn:hover{
+    background:#000;
+    font-weight:bold;
+    text-shadow:0 0 10px #fff;
+    border-top:2px solid #61ECFF;
+    border-bottom:1px solid #61ECFF;
+    box-shadow:0 0 10px #fff;
+    cursor:pointer;
+}
+.profile_navbtn.active{
+    border-bottom: 2px solid #99FFF7;
+    border-top:1px solid #fff;
+    box-shadow:0 0 5px #fff;
+    background:#000;
+}
 .profile_navbtn{
     height: 60px;
     text-align: center;
@@ -448,7 +513,7 @@ CONTENT
     background:#fff !important
 }
 .modal-dialog.wide{
-    width: 70%;
+    width: 65%;
 }
 .modal-header.dark{
     background: #333;
@@ -464,10 +529,7 @@ CONTENT
     line-height: 0;
     overflow: hidden;
 }
-.queue,
-.avgTime{
-    border-right: 1px solid #d3d3d3;
-}
+
 
 .comments_banner{
     height: 150px;
@@ -480,13 +542,13 @@ CONTENT
     min-height:50px;
     text-align: center;
     //padding:5px;
-    display:inline-block;
-    width:31%;
+   // display:inline-block;
+ //   width:31%;
     text-transform:uppercase;
 }
 .overview-stats{
     text-align: center;
-    border: 1px solid #D3D3D3;
+  //  border: 1px solid #D3D3D3;
     margin-top: 20px;
     padding: 10px 0 10px 0;
     border-radius: 5px;
@@ -2424,3 +2486,31 @@ input.gn-search:focus {
     }
 }
 
+.social-icon.facebook {
+    background: url(../../images/social/facebook.png) no-repeat;
+}
+.social-icon.twitter {
+    background: url(../../images/social/twitter.png) no-repeat;
+}
+.profile.birthday{
+    background: url(../../images/social/cracked-egg.png) no-repeat;
+    width:28px;
+}
+.social-icon:hover {
+    background-position: 0 -38px;
+    background-color: #fff;
+}
+
+
+.social-icon {
+    display: inline-block !important;
+    width: 28px;
+    height: 28px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+}

@@ -39,7 +39,7 @@
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
     width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
-    white-space: normal; /* reset white-space decalred in parent*/
+    white-space: nowrap; /* reset white-space decalred in parent*/
    /* display-inline emulation for IE7*/
    zoom: 1; 
    *display: inline;   
@@ -143,7 +143,7 @@
 }
 
 .editable-pre-wrapped {
-   white-space: pre-wrap;
+   white-space: nowrap;
 }
 .editable-container.editable-popup {
     max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
